@@ -40,7 +40,7 @@ public class Main {
 				System.out.println("Saindo...");
 				return;
 			default:
-				System.out.println("Opção inválida. Tente novamente.");
+				System.out.println("Opção inválida. Tente outra vez.");
 			}
 		}
 	}
