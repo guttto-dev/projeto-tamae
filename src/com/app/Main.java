@@ -1,31 +1,37 @@
 package com.app;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+	private static final String ERROR_STORE_MESSAGE = "Não foi possível carregar os arquivos, comunique ao setor de TI.";
+	private static final String INVALID_INPUT_MESSAGE = "Entrada inválida. Deve ser um número.";
+	private static final String INVALID_OPTION_MESSAGE = "Opção inválida. Tente novamente.";
+	private static final String EXIT_MESSAGE = "Saindo...";
+
+	static Scanner scanner = new Scanner(System.in);
+
 	public static void main(String[] args) {
 		Store store = null;
 		try {
 			store = new Store();
 		} catch (IOException e) {
-			System.out.println("Não foi possível carregar os arquivos, comunique ao setor de TI.");
+			System.out.println(ERROR_STORE_MESSAGE);
 			return;
 		}
 
-		Scanner scanner = new Scanner(System.in);
-
 		while (true) {
-			System.out.println("Menu:");
-			System.out.println("1. Adicionar Produto");
-			System.out.println("2. Listar Produtos");
-			System.out.println("3. Comprar Produto");
-			System.out.println("4. Efetuar Pagamento");
-			System.out.println("5. Listar Títulos em Aberto");
-			System.out.println("6. Sair");
-			System.out.print("Escolha uma opção: ");
-			int choice = scanner.nextInt();
-			scanner.nextLine(); // Consumir nova linha
+			System.out.print("""
+					Menu:
+					1. Adicionar Produto
+					2. Listar Produtos
+					3. Comprar Produto
+					4. Efetuar Pagamento
+					5. Listar Títulos em Aberto
+					6. Sair
+					""");
+			int choice = getUserChoice();
 
 			switch (choice) {
 			case 1:
@@ -44,12 +50,27 @@ public class Main {
 				store.listOutstandingTitles();
 				break;
 			case 6:
-				System.out.println("Saindo...");
+				System.out.println(EXIT_MESSAGE);
 				scanner.close();
 				return;
 			default:
-				System.out.println("Opção inválida. Tente novamente.");
+				System.out.println(INVALID_OPTION_MESSAGE);
 			}
 		}
+	}
+
+	private static int getUserChoice() {
+		int choice = -1;
+		while (choice <= -1) {
+			try {
+				System.out.print("Escolha uma opção: ");
+				choice = scanner.nextInt();
+			} catch (InputMismatchException e) {
+				choice = -1;
+				System.out.println(INVALID_INPUT_MESSAGE);
+			}
+			scanner.nextLine(); // Consumir nova linha
+		}
+		return choice;
 	}
 }
