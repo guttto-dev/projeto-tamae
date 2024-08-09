@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.UUID;
 
 public class Store {
@@ -25,21 +24,31 @@ public class Store {
 		loadTitles();
 	}
 
-	public void addProduct(Scanner scanner) {
-		System.out.print("ID do Produto: ");
-		String id = scanner.nextLine();
-		System.out.print("Nome do Produto: ");
-		String name = scanner.nextLine();
-		System.out.print("Preço do Produto: ");
-		double price = scanner.nextDouble();
-		scanner.nextLine(); // Consumir nova linha
+	public void addProduct() {
+		String id = InputHelper.readString("ID do Produto: ");
+		if (id.isBlank()) {
+			System.out.println("ERRO: O id está em branco. Tente novamente.");
+			return;
+		}
+
+		String name = InputHelper.readString("Nome do Produto: ");
+		if (name.isBlank()) {
+			System.out.println("ERRO: O nome está em branco. Tente novamente.");
+			return;
+		}
+
+		double price = InputHelper.readDouble("Preço do Produto: ");
+		if (price <= 0) {
+			System.out.println("ERRO: O preço é inválido. Tente novamente.");
+			return;
+		}
 
 		Product product = new Product(id, name, price);
 		products.add(product);
 		try {
 			saveProducts();
 		} catch (IOException e) {
-			System.out.println("Não foi adicionar o produto, comunique ao setor de TI.");
+			System.out.println("ERRO: Não foi adicionar o produto, comunique ao setor de TI.");
 			return;
 		}
 		System.out.println("Produto adicionado com sucesso.");
@@ -52,9 +61,8 @@ public class Store {
 		}
 	}
 
-	public void purchaseProduct(Scanner scanner) {
-		System.out.print("ID do Produto a comprar: ");
-		String productId = scanner.nextLine();
+	public void purchaseProduct() {
+		String productId = InputHelper.readString("ID do Produto a comprar: ");
 
 		Product product = null;
 		for (Product p : products) {
@@ -70,7 +78,7 @@ public class Store {
 			try {
 				saveTitles();
 			} catch (IOException e) {
-				System.out.println("Não foi comprar o produto, comunique ao setor de TI.");
+				System.out.println("ERRO: Não foi comprar o produto, comunique ao setor de TI.");
 				return;
 			}
 			System.out.println("Produto comprado. Título gerado: " + title.getId());
@@ -79,9 +87,8 @@ public class Store {
 		}
 	}
 
-	public void makePayment(Scanner scanner) {
-		System.out.print("ID do Título a pagar: ");
-		String titleId = scanner.nextLine();
+	public void makePayment() {
+		String titleId = InputHelper.readString("ID do Título a pagar: ");
 
 		Title title = null;
 		for (Title t : titles) {
@@ -96,7 +103,7 @@ public class Store {
 			try {
 				saveTitles();
 			} catch (IOException e) {
-				System.out.println("Não foi pagar o título, comunique ao setor de TI.");
+				System.out.println("ERRO: Não foi pagar o título, comunique ao setor de TI.");
 				return;
 			}
 			System.out.println("Título pago com sucesso.");
