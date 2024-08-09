@@ -1,7 +1,15 @@
 package com.app;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.UUID;
 
 public class Store {
 	private List<Product> products;
@@ -17,7 +25,7 @@ public class Store {
 		loadTitles();
 	}
 
-	public void addProduct(Scanner scanner) throws IOException {
+	public void addProduct(Scanner scanner) {
 		System.out.print("ID do Produto: ");
 		String id = scanner.nextLine();
 		System.out.print("Nome do Produto: ");
@@ -28,7 +36,12 @@ public class Store {
 
 		Product product = new Product(id, name, price);
 		products.add(product);
-		saveProducts();
+		try {
+			saveProducts();
+		} catch (IOException e) {
+			System.out.println("Não foi adicionar o produto, comunique ao setor de TI.");
+			return;
+		}
 		System.out.println("Produto adicionado com sucesso.");
 	}
 
@@ -39,7 +52,7 @@ public class Store {
 		}
 	}
 
-	public void purchaseProduct(Scanner scanner) throws IOException {
+	public void purchaseProduct(Scanner scanner) {
 		System.out.print("ID do Produto a comprar: ");
 		String productId = scanner.nextLine();
 
@@ -54,14 +67,19 @@ public class Store {
 		if (product != null) {
 			Title title = new Title(UUID.randomUUID().toString(), product.getPrice(), false);
 			titles.add(title);
-			saveTitles();
+			try {
+				saveTitles();
+			} catch (IOException e) {
+				System.out.println("Não foi comprar o produto, comunique ao setor de TI.");
+				return;
+			}
 			System.out.println("Produto comprado. Título gerado: " + title.getId());
 		} else {
 			System.out.println("Produto não encontrado.");
 		}
 	}
 
-	public void makePayment(Scanner scanner) throws IOException {
+	public void makePayment(Scanner scanner) {
 		System.out.print("ID do Título a pagar: ");
 		String titleId = scanner.nextLine();
 
@@ -75,7 +93,12 @@ public class Store {
 
 		if (title != null) {
 			title.setPaid(true);
-			saveTitles();
+			try {
+				saveTitles();
+			} catch (IOException e) {
+				System.out.println("Não foi pagar o título, comunique ao setor de TI.");
+				return;
+			}
 			System.out.println("Título pago com sucesso.");
 		} else {
 			System.out.println("Título não encontrado.");

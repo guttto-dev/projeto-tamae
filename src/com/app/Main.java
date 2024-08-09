@@ -4,9 +4,16 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
+		Store store = null;
+		try {
+			store = new Store();
+		} catch (IOException e) {
+			System.out.println("Não foi possível carregar os arquivos, comunique ao setor de TI.");
+			return;
+		}
+
 		Scanner scanner = new Scanner(System.in);
-		Store store = new Store();
 
 		while (true) {
 			System.out.println("Menu:");
@@ -38,6 +45,7 @@ public class Main {
 				break;
 			case 6:
 				System.out.println("Saindo...");
+				scanner.close();
 				return;
 			default:
 				System.out.println("Opção inválida. Tente novamente.");
