@@ -1,6 +1,6 @@
 package com.app;
 
-public class Product {
+public class Product implements Entity {
 	private String id;
 	private String name;
 	private double price;
@@ -11,6 +11,7 @@ public class Product {
 		this.price = price;
 	}
 
+	@Override
 	public String getId() {
 		return id;
 	}
