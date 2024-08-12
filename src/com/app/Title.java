@@ -18,6 +18,10 @@ public class Title implements Entity {
 		return id;
 	}
 
+	public String getClientId() {
+		return clientId;
+	}
+
 	public double getAmount() {
 		return amount;
 	}

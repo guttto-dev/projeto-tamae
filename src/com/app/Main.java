@@ -57,6 +57,7 @@ public class Main {
 			default:
 				System.out.println("ERRO: Opção inválida. Por favor, tente um número do menu.");
 			}
+			System.out.println();
 		}
 	}
 }

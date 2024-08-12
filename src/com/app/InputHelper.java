@@ -43,6 +43,25 @@ public class InputHelper {
 		}
 	}
 
+	public static boolean readYesOrNo(String prompt) {
+		String s;
+		while (true) {
+			System.out.print(prompt + " [Sim/Não]: ");
+			try {
+				s = scanner.nextLine();
+				if ("SIM".contains(s.toUpperCase())) {
+					return true;
+				} else if ("NÃO".contains(s.toUpperCase()) || ("NAO".contains(s.toUpperCase()))) {
+					return false;
+				} else {
+					throw new InputMismatchException();
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("Entrada inválida. Por favor, digite s ou n.");
+			}
+		}
+	}
+
 	public static void clearBuffer() {
 		if (scanner.hasNextLine()) {
 			scanner.nextLine(); // Consumir nova linha
