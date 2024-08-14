@@ -7,7 +7,7 @@ public class Title implements Entity {
 	private double amount;
 	private boolean paid;
 
-	public static final String FILE = "titles.txt";
+	public static final String FILE = "data/titles.txt";
 
 	public Title(int clientId, double amount, boolean paid) {
 		this.id = ++idCounter;

@@ -12,12 +12,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Store {
+	public enum AccessLevel {
+		OWNER(0),
+		MANAGER(1),
+		OPERATOR(2);
+
+		@SuppressWarnings("unused")
+		private final int id;
+	    AccessLevel(int id) {
+	        this.id = id;
+	    }
+	}
+
+	AccessLevel level;
 	private List<Product> products;
 	private List<Title> titles;
 	private List<Client> clients;
 
-	public Store() throws IOException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException,
+	public Store(AccessLevel level) throws IOException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException {
+		this.level = level;
 		products = new ArrayList<>();
 		titles = new ArrayList<>();
 		clients = new ArrayList<>();

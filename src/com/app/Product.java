@@ -6,7 +6,7 @@ public class Product implements Entity {
 	private String name;
 	private double price;
 
-	public static final String FILE = "products.txt";
+	public static final String FILE = "data/products.txt";
 
 	public Product(String name, double price) {
 		this.id = ++idCounter;

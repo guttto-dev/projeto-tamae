@@ -6,7 +6,7 @@ public class Client implements Entity {
 	private String name;
 	private String phoneNumber;
 
-	public static final String FILE = "clients.txt";
+	public static final String FILE = "data/clients.txt";
 
 	public Client(String name, String phoneNumber) {
 		this.id = ++idCounter;
