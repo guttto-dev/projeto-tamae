@@ -6,44 +6,27 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-interface Entity {
-	public String getId();
-}
-
-@FunctionalInterface
-interface EntityParser<T> {
-    T parse(String line);
-}
 
 public class Store {
 	private List<Product> products;
 	private List<Title> titles;
 	private List<Client> clients;
 
-	private static final String PRODUCTS_FILE = "products.txt";
-	private static final String TITLES_FILE = "titles.txt";
-	private static final String CLIENTS_FILE = "clients.txt";
-
-	public Store() throws IOException {
+	public Store() throws IOException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException {
 		products = new ArrayList<>();
 		titles = new ArrayList<>();
 		clients = new ArrayList<>();
-		loadEntities(products, PRODUCTS_FILE, Product::fromString);
-		loadEntities(titles, TITLES_FILE, Title::fromString);
-		loadEntities(clients, CLIENTS_FILE, Client::fromString);
+		loadEntities(Product.class, products);
+		loadEntities(Title.class, titles);
+		loadEntities(Client.class, clients);
 	}
 
 	public void addProduct() {
-		String id = InputHelper.readString("ID do Produto: ");
-		if (id.isBlank()) {
-			System.out.println("ERRO: O ID está em branco. Tente novamente.");
-			return;
-		}
-
 		String name = InputHelper.readString("Nome do Produto: ");
 		if (name.isBlank()) {
 			System.out.println("ERRO: O nome está em branco. Tente novamente.");
@@ -56,7 +39,7 @@ public class Store {
 			return;
 		}
 
-		if (addEntity(products, new Product(id, name, price))) {
+		if (addEntity(products, new Product(name, price))) {
 			System.out.println("Produto adicionado com sucesso.");
 		} else {
 			System.out.println("Não foi possível adicionar o produto.");
@@ -64,21 +47,51 @@ public class Store {
 	}
 
 	public void listProducts() {
-		System.out.println("\nProdutos:");
+		System.out.print("\nProdutos:");
+		if (products.isEmpty()) {
+			System.out.println(" <NENHUM>");
+			return;
+		} else {
+			System.out.println();
+		}
 		for (Product product : products) {
 			System.out.println(product.getId() + " - " + product.getName() + " - R$ " + product.getPrice());
 		}
 	}
 
 	public void listClients() {
-		System.out.println("\nClientes:");
+		System.out.print("\nClientes:");
+		if (clients.isEmpty()) {
+			System.out.println(" <NENHUM>");
+			return;
+		} else {
+			System.out.println();
+		}
 		for (Client client : clients) {
 			System.out.println(client.getId() + " - " + client.getName() + " - " + client.getPhoneNumber());
 		}
 	}
 
+	public void listOutstandingTitles() {
+		boolean once = false;
+		System.out.print("\nTítulos em Aberto:");
+		for (Title title : titles) {
+			if (!title.isPaid()) {
+				if (!once) {
+					once = true;
+					System.out.println();
+				}
+				System.out.println(title.getId() + " - " + title.getClientId() + " - R$ " + title.getAmount());
+			}
+		}
+		if (!once) {
+			System.out.println(" <NENHUM>");
+		}
+	}
+
 	public void purchaseProduct() {
-		String productId = InputHelper.readString("ID do Produto a comprar: ");
+		listProducts();
+		int productId = InputHelper.readInt("ID do Produto a comprar: ");
 		Product product = findEntityById(products, productId);
 
 		if (product == null) {
@@ -87,110 +100,129 @@ public class Store {
 		}
 
 		listClients();
-		String clientId = InputHelper.readString("ID do Cliente comprador (digite vazio caso não exista): ");
-		if (clientId.isBlank()) {
+		String idPrompt = InputHelper.readString("ID do Cliente comprador (digite vazio caso não exista): ");
+		int clientId = -1;
+		if (idPrompt.isBlank()) {
 			if (InputHelper.readYesOrNo("O cliente deseja criar um cadastro?")) {
 				clientId = createClientAccount();
-				if (clientId == null) {
+				if (clientId == -1) {
 					System.out.println("Não foi possível criar o cadastro.");
 					return;
 				}
 				System.out.println("O cliente foi cadastrado com sucesso.");
 			} else {
-				clientId = "ANÔNIMO";
+				clientId = -1; // cliente anônimo
 			}
-		} else if (findEntityById(clients, clientId) == null) {
-			System.out.println("ERRO: ID do Cliente não foi encontrado. Tente novamente.");
-			return;
+		} else {
+			clientId = Integer.parseInt(idPrompt);
+			if (findEntityById(clients, clientId) == null) {
+				System.out.println("ERRO: Cliente não foi encontrado. Tente novamente.");
+				return;
+			}
 		}
 
-		Title title = new Title(UUID.randomUUID().toString(), clientId, product.getPrice(), false);
+		Title title = new Title(clientId, product.getPrice(), false);
 		if (addEntity(titles, title)) {
 			System.out.println("Produto comprado. Título gerado: " + title.getId());
 		} else {
 			System.out.println("Não foi possível comprar o produto.");
+			return;
+		}
+
+		if (InputHelper.readYesOrNo("Fazer o pagamento?")) {
+			makePayment(title);
 		}
 	}
 
 	public void makePayment() {
-		String titleId = InputHelper.readString("ID do Título a pagar: ");
+		listOutstandingTitles();
+		int titleId = InputHelper.readInt("ID do Título a pagar: ");
 		Title title = findEntityById(titles, titleId);
 
-		if (title != null) {
-			title.setPaid(true);
-			if (saveEntities(titles, TITLES_FILE)) {
-				System.out.println("Título pago com sucesso.");
-			}
-		} else {
+		if (title == null) {
 			System.out.println("Título não encontrado.");
+			return;
+		}
+		title.setPaid(true);
+		if (saveEntities(Title.class, titles)) {
+			System.out.println("Título pago com sucesso.");
+		}
+	}
+
+	public void makePayment(Title title) {
+		if (title == null) {
+			System.out.println("Título não encontrado.");
+			return;
+		}
+		title.setPaid(true);
+		if (saveEntities(Title.class, titles)) {
+			System.out.println("Título pago com sucesso.");
 		}
 	}
 
 	/* Retorna novo ID do cliente */
-	public String createClientAccount() {
-		String id = InputHelper.readString("ID do Cliente:");
-		if (id.isBlank()) {
-			System.out.println("ERRO: O ID está em branco. Tente novamente.");
-			return null;
-		}
-
+	public int createClientAccount() {
 		String name = InputHelper.readString("Nome do Cliente: ");
 		if (name.isBlank()) {
 			System.out.println("ERRO: O nome está em branco. Tente novamente.");
-			return null;
+			return -1;
 		}
 
 		String number = InputHelper.readString("Número de telefone do Cliente: ");
 		if (number.isBlank()) {
 			System.out.println("ERRO: O nome está em branco. Tente novamente.");
-			return null;
+			return -1;
 		}
 
-		if (addEntity(clients, new Client(id, name, number))) {
-			return id;
+		Client c = new Client(name, number);
+		if (addEntity(clients, c)) {
+			return c.getId();
 		} else {
-			return null;
+			return -1;
 		}
 	}
 
-	public void listOutstandingTitles() {
-		System.out.println("Títulos em Aberto:");
-		for (Title title : titles) {
-			if (!title.isPaid()) {
-				System.out.println(title.getId() + " - " + title.getClientId() + " - R$ " + title.getAmount());
-			}
-		}
-	}
-
-	private <T extends Entity> void loadEntities(List<T> entities, String fileName, EntityParser<T> parser)
-			throws IOException {
-		File file = new File(fileName);
+	@SuppressWarnings("unchecked")
+	private <T extends Entity> void loadEntities(Class<T> cl, List<T> entities)
+			throws IOException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException {
+		File file = new File((String) cl.getField("FILE").get(cl));
+		Method parser = cl.getMethod("fromString", String.class);
+		int maxId = 0;
 		if (file.exists()) {
 			try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 				String line;
 				while ((line = reader.readLine()) != null) {
-					entities.add(parser.parse(line));
+					T e = (T) parser.invoke(cl, line);
+					if (e.getId() > maxId) {
+						maxId = e.getId();
+					}
+					entities.add(e);
+
 				}
 			}
 		}
+		Method idCounter = cl.getMethod("setIdCounter", int.class);
+		idCounter.invoke(cl, maxId);
 	}
 
-	private <T extends Entity> boolean saveEntities(List<T> entities, String fileName) {
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+	private <T extends Entity> boolean saveEntities(Class<T> cl, List<T> entities) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter((String) cl.getField("FILE").get(cl)))) {
 			for (T entity : entities) {
 				writer.write(entity.toString());
 				writer.newLine();
 			}
 			return true;
-		} catch (IOException e) {
+		} catch (IOException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
 			System.out.println("ERRO: Não foi possível salvar os dados, comunique ao setor de TI.");
 			return false;
 		}
 	}
 
-	private <T extends Entity> T findEntityById(List<T> entities, String id) {
+	private <T extends Entity> T findEntityById(List<T> entities, int id) {
 		for (T e : entities) {
-			if (e.getId().equals(id)) {
+			if (e.getId() == id) {
 				return e;
 			}
 		}
@@ -202,18 +234,10 @@ public class Store {
 			System.out.println("ERRO: ID já existe no banco de dados.");
 			return false;
 		}
-		Class<?> cl = entity.getClass();
+		@SuppressWarnings("unchecked")
+		Class<T> cl = (Class<T>) entity.getClass();
 		entities.add(entity);
-		if (cl == Product.class) {
-			saveEntities(entities, PRODUCTS_FILE);
-		} else if (cl == Title.class) {
-			saveEntities(entities, TITLES_FILE);
-		} else if (cl == Client.class) {
-			saveEntities(entities, CLIENTS_FILE);
-		} else {
-			System.out.println("ERRO: Não foi possível salvar o novo dado");
-			return false;
-		}
+		saveEntities(cl, entities);
 		return true;
 	}
 }

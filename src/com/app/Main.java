@@ -1,6 +1,7 @@
 package com.app;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.NoSuchElementException;
 
 public class Main {
@@ -19,7 +20,9 @@ public class Main {
 		Store store = null;
 		try {
 			store = new Store();
-		} catch (IOException e) {
+		} catch (IOException | NoSuchFieldException | NoSuchMethodException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
 			System.out.println("ERRO: Não foi possível carregar os arquivos, comunique ao setor de TI.");
 			return;
 		}

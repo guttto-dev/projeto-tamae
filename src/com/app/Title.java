@@ -1,12 +1,22 @@
 package com.app;
 
 public class Title implements Entity {
-	private String id;
-	private String clientId;
+	private static int idCounter = 0;
+	private int id;
+	private int clientId;
 	private double amount;
 	private boolean paid;
 
-	public Title(String id, String clientId, double amount, boolean paid) {
+	public static final String FILE = "titles.txt";
+
+	public Title(int clientId, double amount, boolean paid) {
+		this.id = ++idCounter;
+		this.clientId = clientId;
+		this.amount = amount;
+		this.paid = paid;
+	}
+
+	public Title(int id, int clientId, double amount, boolean paid) {
 		this.id = id;
 		this.clientId = clientId;
 		this.amount = amount;
@@ -14,11 +24,11 @@ public class Title implements Entity {
 	}
 
 	@Override
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public String getClientId() {
+	public int getClientId() {
 		return clientId;
 	}
 
@@ -41,6 +51,13 @@ public class Title implements Entity {
 
 	public static Title fromString(String str) {
 		String[] parts = str.split(",");
-		return new Title(parts[0], parts[1], Double.parseDouble(parts[2]), Boolean.parseBoolean(parts[3]));
+		return new Title(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Double.parseDouble(parts[2]),
+				Boolean.parseBoolean(parts[3]));
+	}
+
+	public static void setIdCounter(int count) {
+		if (idCounter == 0) {
+			idCounter = count;
+		}
 	}
 }

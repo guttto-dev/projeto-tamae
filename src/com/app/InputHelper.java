@@ -48,10 +48,10 @@ public class InputHelper {
 		while (true) {
 			System.out.print(prompt + " [Sim/Não]: ");
 			try {
-				s = scanner.nextLine();
-				if ("SIM".contains(s.toUpperCase())) {
+				s = scanner.nextLine().toUpperCase();
+				if ("SIM".contains(s)) {
 					return true;
-				} else if ("NÃO".contains(s.toUpperCase()) || ("NAO".contains(s.toUpperCase()))) {
+				} else if ("NÃO".contains(s) || "NAO".contains(s)) {
 					return false;
 				} else {
 					throw new InputMismatchException();

@@ -1,18 +1,27 @@
 package com.app;
 
 public class Client implements Entity {
-	private String id;
+	private static int idCounter = 0;
+	private int id;
 	private String name;
 	private String phoneNumber;
 
-	public Client(String id, String name, String phoneNumber) {
+	public static final String FILE = "clients.txt";
+
+	public Client(String name, String phoneNumber) {
+		this.id = ++idCounter;
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+	}
+
+	public Client(int id, String name, String phoneNumber) {
 		this.id = id;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 	}
 
 	@Override
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -31,6 +40,12 @@ public class Client implements Entity {
 
 	public static Client fromString(String str) {
 		String[] parts = str.split(",");
-		return new Client(parts[0], parts[1], parts[2]);
+		return new Client(Integer.parseInt(parts[0]), parts[1], parts[2]);
+	}
+
+	public static void setIdCounter(int count) {
+		if (idCounter == 0) {
+			idCounter = count;
+		}
 	}
 }
