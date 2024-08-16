@@ -1,4 +1,4 @@
-package com.app;
+package com.app.entities;
 
 public class Product implements Entity {
 	private static int idCounter = 0;

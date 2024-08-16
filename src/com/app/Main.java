@@ -13,6 +13,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import com.app.entities.Client;
+import com.app.entities.Product;
+import com.app.entities.Title;
+import com.app.util.InputHelper;
+import com.app.util.Secret;
+
 public class Main {
 	private static final String USERS_FILE = "data/users.dat";
 	private static Map<String, User> users;

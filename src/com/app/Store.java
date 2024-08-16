@@ -11,17 +11,22 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.app.entities.Client;
+import com.app.entities.Entity;
+import com.app.entities.Product;
+import com.app.entities.Title;
+import com.app.util.InputHelper;
+
 public class Store {
 	public enum AccessLevel {
-		OWNER(0),
-		MANAGER(1),
-		OPERATOR(2);
+		OWNER(0), MANAGER(1), OPERATOR(2);
 
 		@SuppressWarnings("unused")
 		private final int id;
-	    AccessLevel(int id) {
-	        this.id = id;
-	    }
+
+		AccessLevel(int id) {
+			this.id = id;
+		}
 	}
 
 	AccessLevel level;
@@ -29,8 +34,8 @@ public class Store {
 	private List<Title> titles;
 	private List<Client> clients;
 
-	public Store(AccessLevel level) throws IOException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException {
+	public Store(AccessLevel level) throws IOException, NoSuchFieldException, NoSuchMethodException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		this.level = level;
 		products = new ArrayList<>();
 		titles = new ArrayList<>();
