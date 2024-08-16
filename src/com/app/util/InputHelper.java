@@ -12,7 +12,7 @@ public class InputHelper {
 			try {
 				return scanner.nextLine();
 			} catch (InputMismatchException e) {
-				System.out.println("Entrada inválida. Por favor, tente novamente.");
+				System.out.println("ERRO: Entrada inválida. Por favor, tente novamente.");
 			}
 		}
 	}
@@ -23,7 +23,7 @@ public class InputHelper {
 			try {
 				return scanner.nextInt();
 			} catch (InputMismatchException e) {
-				System.out.println("Entrada inválida. Por favor, insira um número inteiro.");
+				System.out.println("ERRO: Entrada inválida. Por favor, insira um número inteiro.");
 			} finally {
 				clearBuffer();
 			}
@@ -36,7 +36,7 @@ public class InputHelper {
 			try {
 				return scanner.nextDouble();
 			} catch (InputMismatchException e) {
-				System.out.println("Entrada inválida. Por favor, insira um número decimal.");
+				System.out.println("ERRO: Entrada inválida. Por favor, insira um número decimal.");
 			} finally {
 				clearBuffer();
 			}
@@ -57,7 +57,7 @@ public class InputHelper {
 					throw new InputMismatchException();
 				}
 			} catch (InputMismatchException e) {
-				System.out.println("Entrada inválida. Por favor, digite s ou n.");
+				System.out.println("ERRO: Entrada inválida. Por favor, digite s ou n.");
 			}
 		}
 	}

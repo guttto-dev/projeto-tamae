@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.app.entities.Client;
 import com.app.entities.Entity;
+import com.app.entities.Occurrence;
 import com.app.entities.Product;
 import com.app.entities.Title;
 import com.app.util.InputHelper;
@@ -21,7 +22,6 @@ public class Store {
 	public enum AccessLevel {
 		OWNER(0), MANAGER(1), OPERATOR(2);
 
-		@SuppressWarnings("unused")
 		public final int id;
 
 		AccessLevel(int id) {
@@ -29,20 +29,25 @@ public class Store {
 		}
 	}
 
-	AccessLevel level;
+	public final AccessLevel level;
+	public final String username;
 	private List<Product> products;
 	private List<Title> titles;
 	private List<Client> clients;
+	private List<Occurrence> occurrences;
 
-	public Store(AccessLevel level) throws IOException, NoSuchFieldException, NoSuchMethodException,
+	public Store(AccessLevel level, String username) throws IOException, NoSuchFieldException, NoSuchMethodException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		this.level = level;
+		this.username = username;
 		products = new ArrayList<>();
 		titles = new ArrayList<>();
 		clients = new ArrayList<>();
+		occurrences = new ArrayList<>();
 		loadEntities(Product.class, products);
 		loadEntities(Title.class, titles);
 		loadEntities(Client.class, clients);
+		loadEntities(Occurrence.class, occurrences);
 	}
 
 	public void addProduct() {
@@ -69,7 +74,13 @@ public class Store {
 				System.out.println("ERRO: A quantidade é inválida. Tente novamente.");
 				return;
 			}
+			int minQuantity = InputHelper.readInt("Quantidade MÍNIMA do Produto: ");
+			if (minQuantity <= 0) {
+				System.out.println("ERRO: A quantidade é inválida. Tente novamente.");
+				return;
+			}
 			product.setQuantity(quantity);
+			product.setMinQuantity(minQuantity);
 			saveEntities(Product.class, products);
 			return;
 		case 3:
@@ -98,7 +109,13 @@ public class Store {
 			return;
 		}
 
-		if (addEntity(products, new Product(name, price, quantity))) {
+		int minQuantity = InputHelper.readInt("Quantidade MÍNIMA do Produto: ");
+		if (minQuantity <= 0) {
+			System.out.println("ERRO: A quantidade é inválida. Tente novamente.");
+			return;
+		}
+
+		if (addEntity(products, new Product(name, price, quantity, minQuantity))) {
 			System.out.println("Produto adicionado com sucesso.");
 		} else {
 			System.out.println("Não foi possível adicionar o produto.");
@@ -118,7 +135,7 @@ public class Store {
 				System.out.println(product.getId() + " - " + product.getName() + " - R$ " + product.getPrice());
 			} else {
 				System.out.println(product.getId() + " - " + product.getName() + " - R$ " + product.getPrice() + " - "
-						+ product.getQuantity());
+						+ product.getQuantity() + " - " + product.getMinQuantity());
 			}
 		}
 	}
@@ -225,20 +242,12 @@ public class Store {
 		listOutstandingTitles();
 		int titleId = InputHelper.readInt("ID do Título a pagar: ");
 		Title title = findEntityById(titles, titleId);
-
-		if (title == null) {
-			System.out.println("Título não encontrado.");
-			return;
-		}
-		title.setPaid(true);
-		if (saveEntities(Title.class, titles)) {
-			System.out.println("Título pago com sucesso.");
-		}
+		makePayment(title);
 	}
 
 	public void makePayment(Title title) {
 		if (title == null) {
-			System.out.println("Título não encontrado.");
+			System.out.println("ERRO: Título não encontrado.");
 			return;
 		}
 		title.setPaid(true);
@@ -285,7 +294,6 @@ public class Store {
 						maxId = e.getId();
 					}
 					entities.add(e);
-
 				}
 			}
 		}
@@ -297,18 +305,137 @@ public class Store {
 	public void showManagementNotifications() {
 		boolean first = true;
 		for (Product product : products) {
-			if (product.getQuantity() < 20) {
+			if (product.getQuantity() < product.getMinQuantity()) {
 				if (first) {
 					first = false;
-					System.out.println("\nAtenção! Os Produtos a seguir possuem menos de 20 unidades no sistema:");
+					System.out.println("\nAtenção! Os Produtos a seguir possuem menos unidades que o esperado:");
 				}
 				System.out.println(product.getId() + " - " + product.getName() + " - R$ " + product.getPrice() + " - "
-						+ product.getQuantity());
+						+ product.getQuantity() + " - " + product.getMinQuantity());
 			}
 		}
 		if (!first) {
 			System.out.println();
 		}
+	}
+
+	public void updateClient() {
+		int id = InputHelper.readInt("ID do Cliente: ");
+		Client client = findEntityById(clients, id);
+		if (client == null) {
+			System.out.println("ERRO: Cliente não encontrado.");
+			return;
+		}
+
+		System.out.print("""
+				\n[Cliente]
+				1. Alterar valores
+				2. Deletar Cliente
+				3. Voltar
+				""");
+		int choice = InputHelper.readInt("Escolha uma opção: ");
+
+		switch (choice) {
+		case 1:
+			String name = InputHelper.readString("Nome do Cliente (deixe em branco para manter): ");
+			if (name.isBlank()) {
+				name = null;
+			}
+			String number = InputHelper.readString("Número de telefone do Cliente (deixe em branco para manter): ");
+			if (number.isBlank()) {
+				number = null;
+			}
+
+			if (name != null) {
+				client.setName(name);
+			}
+			if (number != null) {
+				client.setPhoneNumber(number);
+			}
+			saveEntities(Client.class, clients);
+			break;
+		case 2:
+			client.setName("<REMOVIDO>");
+			client.setPhoneNumber(null);
+			saveEntities(Client.class, clients);
+			break;
+		case 3:
+			return;
+		default:
+			System.out.println("ERRO: Opção inválida. Por favor, tente um número do menu.");
+			break;
+		}
+	}
+
+	public void runOccurrenceMenu() {
+		while (true) {
+			System.out.print("""
+					\n[Ocorrências]
+					1. Reportar ocorrência sobre processo interno
+					2. Reportar ocorrência sobre o programa ERP
+					3. Listar ocorrências
+					4. Marcar ocorrência como resolvida
+					5. Voltar
+					""");
+			int choice = InputHelper.readInt("Escolha uma opção: ");
+
+			switch (choice) {
+			case 1:
+			case 2:
+				String name = null;
+				String text = "";
+				if (InputHelper.readYesOrNo("Deseja se identificar com seu nome de usuário?")) {
+					name = username;
+				}
+				if (choice == 1) {
+					text += "[INTERNO] ";
+				} else if (choice == 2) {
+					text += "[ERP] ";
+				}
+				text += InputHelper.readString("Digite a ocorrência [ENTER PARA TERMINAR]: ");
+				occurrences.add(new Occurrence(name, text, false));
+				saveEntities(Occurrence.class, occurrences);
+				break;
+			case 3:
+				if (level == AccessLevel.OPERATOR) {
+					System.out.println("ERRO: Usuário não tem nível de acesso para acessar essa opção.");
+					break;
+				}
+				if (occurrences.isEmpty()) {
+					System.out.println("Nenhuma ocorrência encontrada.");
+					break;
+				}
+				for (Occurrence o : occurrences) {
+					System.out.println("\n* OCORRÊNCIA " + (o.isResolved() ? "RESOLVIDA" : "NÃO RESOLVIDA"));
+					System.out.println("ID: " + o.getId());
+					System.out.println("Usuário: " + ((o.getUsername() != null) ? o.getUsername() : "<ANÔNIMO>"));
+					System.out.println("Texto: " + o.getText());
+				}
+				break;
+			case 4:
+				if (level == AccessLevel.OPERATOR) {
+					System.out.println("ERRO: Usuário não tem nível de acesso para acessar essa opção.");
+					break;
+				}
+				int id = InputHelper.readInt("ID da ocorrência: ");
+				Occurrence o = findEntityById(occurrences, id);
+				if (o == null) {
+					System.out.println("ERRO: Ocorrência não encontrada.");
+					break;
+				}
+				o.setResolved(true);
+				if (saveEntities(Occurrence.class, occurrences)) {
+					System.out.println("Ocorrência resolvida!");
+				}
+				break;
+			case 5:
+				return;
+			default:
+				System.out.println("ERRO: Opção inválida. Por favor, tente um número do menu.");
+				break;
+			}
+		}
+
 	}
 
 	private <T extends Entity> boolean saveEntities(Class<T> cl, List<T> entities) {

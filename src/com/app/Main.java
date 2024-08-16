@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.app.entities.Client;
+import com.app.entities.Occurrence;
 import com.app.entities.Product;
 import com.app.entities.Title;
 import com.app.util.InputHelper;
@@ -43,42 +44,33 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		try {
 			users = new HashMap<>();
-			User user = null;
+			String username = null;
+			String password = null;
 			loadUsers();
 
 			if (users.isEmpty()) {
 				System.out.println("Nenhum usuário encontrado. Registrando o administrador inicial...");
-				String username = InputHelper.readString("Nome de usuário do administrador: ");
-				if (username.isBlank()) {
-					System.out.println("ERRO: O nome está em branco. Tente novamente.");
-					return;
+				while (true) {
+					username = InputHelper.readString("Nome de usuário do administrador: ");
+					if (username.isBlank()) {
+						System.out.println("ERRO: O nome está em branco. Tente novamente.");
+						continue;
+					}
+					password = InputHelper.readString("Senha do administrador: ");
+					if (password.isBlank()) {
+						System.out.println("ERRO: A senha está em branco. Tente novamente.");
+						continue;
+					}
+					break;
 				}
-				String password = InputHelper.readString("Senha do administrador: ");
-				if (password.isBlank()) {
-					System.out.println("ERRO: A senha está em branco. Tente novamente.");
-					return;
-				}
-				user = registerUser(username, password, true, Store.AccessLevel.OWNER);
+				registerUser(username, password, true, Store.AccessLevel.OWNER);
 				System.out.println("Administrador registrado com sucesso!");
-				runMainMenu(user);
-				return;
 			}
 
 			while (true) {
-				String username = InputHelper.readString("[LOGIN]\nNome do usuário: ");
-				if (username.isBlank()) {
-					return;
-				}
-				String password = InputHelper.readString("Senha do usuário: ");
-
-				if (authenticateUser(username, password)) {
-					user = users.get(username);
-					break;
-				} else {
-					System.out.println("Autenticação falhou. Usuário ou senha incorretos.\n");
-				}
+				runLogin(username, password);
+				username = password = null;
 			}
-			runMainMenu(user);
 		} catch (NoSuchElementException e) {
 			// Lida com o caso de CTRL-D (EOF) ser pressionado
 		} catch (Exception e) {
@@ -91,35 +83,53 @@ public class Main {
 		}
 	}
 
+	private static void runLogin(String username, String password) throws Exception {
+		if (username == null || password == null) {
+			username = InputHelper.readString("[LOGIN]\nNome do usuário: ");
+			if (username.isBlank()) {
+				throw new NoSuchElementException();
+			}
+			password = InputHelper.readString("Senha do usuário: ");
+		}
+
+		if (authenticateUser(username, password)) {
+			User user = users.get(username);
+			runMainMenu(user);
+			System.out.println();
+		} else {
+			System.out.println("ERRO: Autenticação falhou. Usuário ou senha incorretos.\n");
+		}
+	}
+
 	private static void runMainMenu(User user) throws Exception {
+		// Adicionar hook para criptografar arquivos em uma saída inesperada
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				try {
+					encryptFiles();
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("ERRO: Tratamento dos arquivos na saída falhou, comunique ao setor de TI.");
+				}
+			}
+		});
+
 		System.out.println("\nOlá, " + user.username + "!");
 		while (true) {
 			System.out.print("""
 					[MENU]
 					1. Acessar loja
 					2. Registrar novo usuário
-					3. Sair
+					3. Voltar
 					""");
 			int choice = InputHelper.readInt("Escolha uma opção: ");
 
 			switch (choice) {
 			case 1:
-				// Adicionar hook para criptografar arquivos em uma saída inesperada
-				Runtime.getRuntime().addShutdownHook(new Thread() {
-					@Override
-					public void run() {
-						try {
-							encryptFiles();
-						} catch (Exception e) {
-
-							e.printStackTrace();
-							System.out.println("Couldn't save score before terminating.");
-						}
-					}
-				});
 				decryptFiles();
-				runStore(user.level);
-				return;
+				runStore(user.level, user.username);
+				break;
 			case 2:
 				if (!user.isAdmin) {
 					System.out.println("Apenas administradores podem registrar novos usuários.");
@@ -135,7 +145,7 @@ public class Main {
 					System.out.println("ERRO: A senha está em branco. Tente novamente.");
 					break;
 				}
-				int level = InputHelper.readInt("Nível de acesso (0 -> DONO, 1 -> GERENTE, 2 -> OPERADOR: ");
+				int level = InputHelper.readInt("Nível de acesso (0 -> DONO, 1 -> GERENTE, 2 -> OPERADOR): ");
 				if (level == 0) {
 					registerUser(username, password, false, Store.AccessLevel.OWNER);
 				} else if (level == 1) {
@@ -157,10 +167,10 @@ public class Main {
 		}
 	}
 
-	private static void runStore(Store.AccessLevel level) {
+	private static void runStore(Store.AccessLevel level, String username) {
 		Store store = null;
 		try {
-			store = new Store(level);
+			store = new Store(level, username);
 		} catch (IOException | NoSuchFieldException | NoSuchMethodException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
@@ -185,7 +195,8 @@ public class Main {
 					2. Comprar Produto
 					3. Efetuar Pagamento
 					4. Listar Títulos em Aberto
-					5. Sair
+					5. Voltar
+					0. Reportar ocorrência
 					""");
 			int choice = InputHelper.readInt("Escolha uma opção: ");
 
@@ -197,6 +208,7 @@ public class Main {
 			case 2 -> store.purchaseProduct();
 			case 3 -> store.makePayment();
 			case 4 -> store.listOutstandingTitles();
+			case 0 -> store.runOccurrenceMenu();
 			default -> System.out.println("ERRO: Opção inválida. Por favor, tente um número do menu.");
 			}
 			System.out.println();
@@ -212,12 +224,14 @@ public class Main {
 					3. Listar Títulos em aberto
 					4. Listar Títulos pagos
 					5. Listar clientes
-					6. Sair
+					6. Atualizar cliente
+					7. Voltar
+					0. Ocorrências
 					""");
 			store.showManagementNotifications();
 			int choice = InputHelper.readInt("Escolha uma opção: ");
 
-			if (choice == 6) {
+			if (choice == 7) {
 				return;
 			}
 			switch (choice) {
@@ -226,6 +240,8 @@ public class Main {
 			case 3 -> store.listOutstandingTitles();
 			case 4 -> store.listPaidTitles();
 			case 5 -> store.listClients();
+			case 6 -> store.updateClient();
+			case 0 -> store.runOccurrenceMenu();
 			default -> System.out.println("ERRO: Opção inválida. Por favor, tente um número do menu.");
 			}
 			System.out.println();
@@ -243,12 +259,14 @@ public class Main {
 					5. Listar Títulos em aberto
 					6. Listar Títulos pagos
 					7. Listar clientes
-					8. Sair
+					8. Atualizar cliente
+					9. Voltar
+					0. Ocorrências
 					""");
 			store.showManagementNotifications();
 			int choice = InputHelper.readInt("Escolha uma opção: ");
 
-			if (choice == 8) {
+			if (choice == 9) {
 				return;
 			}
 			switch (choice) {
@@ -259,6 +277,8 @@ public class Main {
 			case 5 -> store.listOutstandingTitles();
 			case 6 -> store.listPaidTitles();
 			case 7 -> store.listClients();
+			case 8 -> store.updateClient();
+			case 0 -> store.runOccurrenceMenu();
 			default -> System.out.println("ERRO: Opção inválida. Por favor, tente um número do menu.");
 			}
 			System.out.println();
@@ -312,11 +332,13 @@ public class Main {
 		Secret.decryptFile(Product.FILE + ".enc", Product.FILE);
 		Secret.decryptFile(Title.FILE + ".enc", Title.FILE);
 		Secret.decryptFile(Client.FILE + ".enc", Client.FILE);
+		Secret.decryptFile(Occurrence.FILE + ".enc", Occurrence.FILE);
 	}
 
 	private static void encryptFiles() throws Exception {
 		Secret.encryptFile(Product.FILE, Product.FILE + ".enc");
 		Secret.encryptFile(Title.FILE, Title.FILE + ".enc");
 		Secret.encryptFile(Client.FILE, Client.FILE + ".enc");
+		Secret.encryptFile(Occurrence.FILE, Occurrence.FILE + ".enc");
 	}
 }
