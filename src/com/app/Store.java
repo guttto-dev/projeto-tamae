@@ -22,7 +22,7 @@ public class Store {
 		OWNER(0), MANAGER(1), OPERATOR(2);
 
 		@SuppressWarnings("unused")
-		private final int id;
+		public final int id;
 
 		AccessLevel(int id) {
 			this.id = id;
@@ -46,6 +46,40 @@ public class Store {
 	}
 
 	public void addProduct() {
+		System.out.print("""
+				\n[Produtos]
+				1. Novo Produto
+				2. Alterar quantidade do Produto
+				3. Voltar
+				""");
+		int choice = InputHelper.readInt("Escolha uma opção: ");
+
+		switch (choice) {
+		case 1:
+			break;
+		case 2:
+			int id = InputHelper.readInt("\nID do Produto: ");
+			Product product = findEntityById(products, id);
+			if (product == null) {
+				System.out.println("ERRO: Produto não encontrado.");
+				return;
+			}
+			int quantity = InputHelper.readInt("Quantidade do Produto: ");
+			if (quantity <= 0) {
+				System.out.println("ERRO: A quantidade é inválida. Tente novamente.");
+				return;
+			}
+			product.setQuantity(quantity);
+			saveEntities(Product.class, products);
+			return;
+		case 3:
+			return;
+		default:
+			System.out.println("ERRO: Opção inválida. Por favor, tente um número do menu.");
+			return;
+		}
+		System.out.println();
+
 		String name = InputHelper.readString("Nome do Produto: ");
 		if (name.isBlank()) {
 			System.out.println("ERRO: O nome está em branco. Tente novamente.");
@@ -58,7 +92,13 @@ public class Store {
 			return;
 		}
 
-		if (addEntity(products, new Product(name, price))) {
+		int quantity = InputHelper.readInt("Quantidade do Produto: ");
+		if (quantity <= 0) {
+			System.out.println("ERRO: A quantidade é inválida. Tente novamente.");
+			return;
+		}
+
+		if (addEntity(products, new Product(name, price, quantity))) {
 			System.out.println("Produto adicionado com sucesso.");
 		} else {
 			System.out.println("Não foi possível adicionar o produto.");
@@ -74,7 +114,12 @@ public class Store {
 			System.out.println();
 		}
 		for (Product product : products) {
-			System.out.println(product.getId() + " - " + product.getName() + " - R$ " + product.getPrice());
+			if (level == AccessLevel.OPERATOR) {
+				System.out.println(product.getId() + " - " + product.getName() + " - R$ " + product.getPrice());
+			} else {
+				System.out.println(product.getId() + " - " + product.getName() + " - R$ " + product.getPrice() + " - "
+						+ product.getQuantity());
+			}
 		}
 	}
 
@@ -93,9 +138,26 @@ public class Store {
 
 	public void listOutstandingTitles() {
 		boolean once = false;
-		System.out.print("\nTítulos em Aberto:");
+		System.out.print("\nTítulos em aberto:");
 		for (Title title : titles) {
 			if (!title.isPaid()) {
+				if (!once) {
+					once = true;
+					System.out.println();
+				}
+				System.out.println(title.getId() + " - " + title.getClientId() + " - R$ " + title.getAmount());
+			}
+		}
+		if (!once) {
+			System.out.println(" <NENHUM>");
+		}
+	}
+
+	public void listPaidTitles() {
+		boolean once = false;
+		System.out.print("\nTítulos pagos:");
+		for (Title title : titles) {
+			if (title.isPaid()) {
 				if (!once) {
 					once = true;
 					System.out.println();
@@ -115,6 +177,11 @@ public class Store {
 
 		if (product == null) {
 			System.out.println("ERRO: Produto não encontrado.");
+			return;
+		}
+
+		if (product.getQuantity() <= 0) {
+			System.out.println("ERRO: O Produto não consta quantidade no sistema.");
 			return;
 		}
 
@@ -142,7 +209,8 @@ public class Store {
 
 		Title title = new Title(clientId, product.getPrice(), false);
 		if (addEntity(titles, title)) {
-			System.out.println("Produto comprado. Título gerado: " + title.getId());
+			System.out.println("Produto comprado. ID do Título gerado: " + title.getId());
+			product.decrementQuantity();
 		} else {
 			System.out.println("Não foi possível comprar o produto.");
 			return;
@@ -223,6 +291,24 @@ public class Store {
 		}
 		Method idCounter = cl.getMethod("setIdCounter", int.class);
 		idCounter.invoke(cl, maxId);
+	}
+
+	// """"""""IA""""""""
+	public void showManagementNotifications() {
+		boolean first = true;
+		for (Product product : products) {
+			if (product.getQuantity() < 20) {
+				if (first) {
+					first = false;
+					System.out.println("\nAtenção! Os Produtos a seguir possuem menos de 20 unidades no sistema:");
+				}
+				System.out.println(product.getId() + " - " + product.getName() + " - R$ " + product.getPrice() + " - "
+						+ product.getQuantity());
+			}
+		}
+		if (!first) {
+			System.out.println();
+		}
 	}
 
 	private <T extends Entity> boolean saveEntities(Class<T> cl, List<T> entities) {

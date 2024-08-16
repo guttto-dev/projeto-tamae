@@ -126,9 +126,27 @@ public class Main {
 					break;
 				}
 				String username = InputHelper.readString("Nome do usuário: ");
+				if (username.isBlank()) {
+					System.out.println("ERRO: O nome está em branco. Tente novamente.");
+					break;
+				}
 				String password = InputHelper.readString("Senha do usuário: ");
-				registerUser(username, password, false, Store.AccessLevel.OPERATOR);
-				System.out.println("Novo usuário registrado com sucesso!\n");
+				if (password.isBlank()) {
+					System.out.println("ERRO: A senha está em branco. Tente novamente.");
+					break;
+				}
+				int level = InputHelper.readInt("Nível de acesso (0 -> DONO, 1 -> GERENTE, 2 -> OPERADOR: ");
+				if (level == 0) {
+					registerUser(username, password, false, Store.AccessLevel.OWNER);
+				} else if (level == 1) {
+					registerUser(username, password, false, Store.AccessLevel.MANAGER);
+				} else if (level == 2) {
+					registerUser(username, password, false, Store.AccessLevel.OPERATOR);
+				} else {
+					System.out.println("ERRO: Nível de acesso inválido. Tente novamente.");
+					break;
+				}
+				System.out.println("Novo usuário registrado com sucesso!");
 				break;
 			case 3:
 				return;
@@ -151,38 +169,97 @@ public class Main {
 		}
 
 		System.out.println();
+		switch (level) {
+		case OPERATOR -> runOperatorMenu(store);
+		case MANAGER -> runManagerMenu(store);
+		case OWNER -> runOwnerMenu(store);
+		default -> throw new IllegalArgumentException("Nível de acesso inválido: " + level);
+		}
+	}
+
+	private static void runOperatorMenu(Store store) {
 		while (true) {
 			System.out.print("""
-					[LOJA]
+					[LOJA - OPERADOR]
+					1. Listar Produtos
+					2. Comprar Produto
+					3. Efetuar Pagamento
+					4. Listar Títulos em Aberto
+					5. Sair
+					""");
+			int choice = InputHelper.readInt("Escolha uma opção: ");
+
+			if (choice == 5) {
+				return;
+			}
+			switch (choice) {
+			case 1 -> store.listProducts();
+			case 2 -> store.purchaseProduct();
+			case 3 -> store.makePayment();
+			case 4 -> store.listOutstandingTitles();
+			default -> System.out.println("ERRO: Opção inválida. Por favor, tente um número do menu.");
+			}
+			System.out.println();
+		}
+	}
+
+	private static void runManagerMenu(Store store) {
+		while (true) {
+			System.out.print("""
+					[LOJA - GERENTE]
+					1. Adicionar Produto
+					2. Listar Produtos
+					3. Listar Títulos em aberto
+					4. Listar Títulos pagos
+					5. Listar clientes
+					6. Sair
+					""");
+			store.showManagementNotifications();
+			int choice = InputHelper.readInt("Escolha uma opção: ");
+
+			if (choice == 6) {
+				return;
+			}
+			switch (choice) {
+			case 1 -> store.addProduct();
+			case 2 -> store.listProducts();
+			case 3 -> store.listOutstandingTitles();
+			case 4 -> store.listPaidTitles();
+			case 5 -> store.listClients();
+			default -> System.out.println("ERRO: Opção inválida. Por favor, tente um número do menu.");
+			}
+			System.out.println();
+		}
+	}
+
+	private static void runOwnerMenu(Store store) {
+		while (true) {
+			System.out.print("""
+					[LOJA - DONO]
 					1. Adicionar Produto
 					2. Listar Produtos
 					3. Comprar Produto
 					4. Efetuar Pagamento
-					5. Listar Títulos em Aberto
-					6. Sair
+					5. Listar Títulos em aberto
+					6. Listar Títulos pagos
+					7. Listar clientes
+					8. Sair
 					""");
+			store.showManagementNotifications();
 			int choice = InputHelper.readInt("Escolha uma opção: ");
 
-			switch (choice) {
-			case 1:
-				store.addProduct();
-				break;
-			case 2:
-				store.listProducts();
-				break;
-			case 3:
-				store.purchaseProduct();
-				break;
-			case 4:
-				store.makePayment();
-				break;
-			case 5:
-				store.listOutstandingTitles();
-				break;
-			case 6:
+			if (choice == 8) {
 				return;
-			default:
-				System.out.println("ERRO: Opção inválida. Por favor, tente um número do menu.");
+			}
+			switch (choice) {
+			case 1 -> store.addProduct();
+			case 2 -> store.listProducts();
+			case 3 -> store.purchaseProduct();
+			case 4 -> store.makePayment();
+			case 5 -> store.listOutstandingTitles();
+			case 6 -> store.listPaidTitles();
+			case 7 -> store.listClients();
+			default -> System.out.println("ERRO: Opção inválida. Por favor, tente um número do menu.");
 			}
 			System.out.println();
 		}
