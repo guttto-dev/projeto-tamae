@@ -9,12 +9,15 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.app.entities.Client;
 import com.app.entities.Entity;
 import com.app.entities.Occurrence;
 import com.app.entities.Product;
+import com.app.entities.ProductTransaction;
 import com.app.entities.Title;
 import com.app.util.InputHelper;
 
@@ -35,6 +38,7 @@ public class Store {
 	private List<Title> titles;
 	private List<Client> clients;
 	private List<Occurrence> occurrences;
+	private List<ProductTransaction> prodTransactions;
 
 	public Store(AccessLevel level, String username) throws IOException, NoSuchFieldException, NoSuchMethodException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -44,10 +48,12 @@ public class Store {
 		titles = new ArrayList<>();
 		clients = new ArrayList<>();
 		occurrences = new ArrayList<>();
+		prodTransactions = new ArrayList<>();
 		loadEntities(Product.class, products);
 		loadEntities(Title.class, titles);
 		loadEntities(Client.class, clients);
 		loadEntities(Occurrence.class, occurrences);
+		loadEntities(ProductTransaction.class, prodTransactions);
 	}
 
 	public void addProduct() {
@@ -79,7 +85,7 @@ public class Store {
 				System.out.println("ERRO: A quantidade é inválida. Tente novamente.");
 				return;
 			}
-			product.setQuantity(quantity);
+			addEntity(prodTransactions, product.setQuantity(quantity));
 			product.setMinQuantity(minQuantity);
 			saveEntities(Product.class, products);
 			return;
@@ -138,6 +144,51 @@ public class Store {
 						+ product.getQuantity() + " - " + product.getMinQuantity());
 			}
 		}
+	}
+
+	public void listProductReport() {
+		 Map<Integer, Double> prodSaleValues = new HashMap<>();
+
+		System.out.print("\n[Relatório de Produtos]");
+		if (prodTransactions.isEmpty()) {
+			System.out.println(" <NENHUM>");
+			return;
+		} else {
+			System.out.println();
+		}
+
+		System.out.println("\nHistórico de transações:");
+		for (ProductTransaction t : prodTransactions) {
+			Product product = findEntityById(products, t.getProdcutId());
+			if (product == null) {
+				System.out.println("ID INVÁLIDO: " + t.getProdcutId());
+				continue;
+			}
+			System.out.printf("ID: %d;  PRODUTO: %s;  TITLE_ID: %d;  ALTERAÇÃO: %d;\n", t.getId(),
+					product.getName(), t.getTitleId(), t.getQuantityChange());
+			if (t.getQuantityChange() < 0 && t.getTitleId() != -1) {
+				prodSaleValues.merge(product.getId(), -t.getQuantityChange() * t.getProductPrice(), Double::sum);
+			}
+		}
+
+		if (prodSaleValues.isEmpty()) {
+			return;
+		}
+
+		System.out.println("\nReceita bruta por produto:");
+		for (Integer productId : prodSaleValues.keySet()) {
+			Double value = prodSaleValues.get(productId);
+			Product product = findEntityById(products, productId);
+			System.out.printf("PRODUTO: %s;  RECEITA BRUTA: R$ %.2f;\n", product.getName(), value);
+		}
+
+		double total = 0;
+        for (Double value : prodSaleValues.values()) {
+            total += value;
+        }
+        System.out.println("\nValor total da receita bruta: R$ " + total);
+
+        InputHelper.readString("\nDigite ENTER para continuar...");
 	}
 
 	public void listClients() {
@@ -226,8 +277,8 @@ public class Store {
 
 		Title title = new Title(clientId, product.getPrice(), false);
 		if (addEntity(titles, title)) {
+			addEntity(prodTransactions, product.purchaseProduct(title.getId()));
 			System.out.println("Produto comprado. ID do Título gerado: " + title.getId());
-			product.decrementQuantity();
 		} else {
 			System.out.println("Não foi possível comprar o produto.");
 			return;
@@ -469,7 +520,10 @@ public class Store {
 		@SuppressWarnings("unchecked")
 		Class<T> cl = (Class<T>) entity.getClass();
 		entities.add(entity);
-		saveEntities(cl, entities);
+		if (!saveEntities(cl, entities)) {
+			entities.remove(entity);
+			return false;
+		}
 		return true;
 	}
 }

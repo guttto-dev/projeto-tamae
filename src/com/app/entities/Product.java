@@ -38,12 +38,16 @@ public class Product implements Entity {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public ProductTransaction setQuantity(int quantity) {
+		ProductTransaction transac = new ProductTransaction(id, price, -1, quantity - this.quantity);
 		this.quantity = quantity;
+		return transac;
 	}
 
-	public void decrementQuantity() {
+	public ProductTransaction purchaseProduct(int titleId) {
+		ProductTransaction transac = new ProductTransaction(id, price, titleId, -1);
 		this.quantity--;
+		return transac;
 	}
 
 	public int getMinQuantity() {
