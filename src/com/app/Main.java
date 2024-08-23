@@ -16,6 +16,7 @@ import java.util.NoSuchElementException;
 import com.app.entities.Client;
 import com.app.entities.Occurrence;
 import com.app.entities.Product;
+import com.app.entities.ProductTransaction;
 import com.app.entities.Title;
 import com.app.util.InputHelper;
 import com.app.util.Secret;
@@ -221,26 +222,28 @@ public class Main {
 					[LOJA - GERENTE]
 					1. Adicionar Produto
 					2. Listar Produtos
-					3. Listar Títulos em aberto
-					4. Listar Títulos pagos
-					5. Listar clientes
-					6. Atualizar cliente
-					7. Voltar
+					3. Listar Relatório de Produtos
+					4. Listar Títulos em aberto
+					5. Listar Títulos pagos
+					6. Listar clientes
+					7. Atualizar cliente
+					8. Voltar
 					0. Ocorrências
 					""");
 			store.showManagementNotifications();
 			int choice = InputHelper.readInt("Escolha uma opção: ");
 
-			if (choice == 7) {
+			if (choice == 8) {
 				return;
 			}
 			switch (choice) {
 			case 1 -> store.addProduct();
 			case 2 -> store.listProducts();
-			case 3 -> store.listOutstandingTitles();
-			case 4 -> store.listPaidTitles();
-			case 5 -> store.listClients();
-			case 6 -> store.updateClient();
+			case 3 -> store.listProductReport();
+			case 4 -> store.listOutstandingTitles();
+			case 5 -> store.listPaidTitles();
+			case 6 -> store.listClients();
+			case 7 -> store.updateClient();
 			case 0 -> store.runOccurrenceMenu();
 			default -> System.out.println("ERRO: Opção inválida. Por favor, tente um número do menu.");
 			}
@@ -252,32 +255,34 @@ public class Main {
 		while (true) {
 			System.out.print("""
 					[LOJA - DONO]
-					1. Adicionar Produto
-					2. Listar Produtos
-					3. Comprar Produto
-					4. Efetuar Pagamento
-					5. Listar Títulos em aberto
-					6. Listar Títulos pagos
-					7. Listar clientes
-					8. Atualizar cliente
-					9. Voltar
-					0. Ocorrências
+					 1. Adicionar Produto
+					 2. Listar Produtos
+					 3. Listar Relatório de Produtos
+					 4. Comprar Produto
+					 5. Efetuar Pagamento
+					 6. Listar Títulos em aberto
+					 7. Listar Títulos pagos
+					 8. Listar clientes
+					 9. Atualizar cliente
+					10. Voltar
+					 0. Ocorrências
 					""");
 			store.showManagementNotifications();
 			int choice = InputHelper.readInt("Escolha uma opção: ");
 
-			if (choice == 9) {
+			if (choice == 10) {
 				return;
 			}
 			switch (choice) {
 			case 1 -> store.addProduct();
 			case 2 -> store.listProducts();
-			case 3 -> store.purchaseProduct();
-			case 4 -> store.makePayment();
-			case 5 -> store.listOutstandingTitles();
-			case 6 -> store.listPaidTitles();
-			case 7 -> store.listClients();
-			case 8 -> store.updateClient();
+			case 3 -> store.listProductReport();
+			case 4 -> store.purchaseProduct();
+			case 5 -> store.makePayment();
+			case 6 -> store.listOutstandingTitles();
+			case 7 -> store.listPaidTitles();
+			case 8 -> store.listClients();
+			case 9 -> store.updateClient();
 			case 0 -> store.runOccurrenceMenu();
 			default -> System.out.println("ERRO: Opção inválida. Por favor, tente um número do menu.");
 			}
@@ -333,6 +338,7 @@ public class Main {
 		Secret.decryptFile(Title.FILE + ".enc", Title.FILE);
 		Secret.decryptFile(Client.FILE + ".enc", Client.FILE);
 		Secret.decryptFile(Occurrence.FILE + ".enc", Occurrence.FILE);
+		Secret.decryptFile(ProductTransaction.FILE + ".enc", ProductTransaction.FILE);
 	}
 
 	private static void encryptFiles() throws Exception {
@@ -340,5 +346,6 @@ public class Main {
 		Secret.encryptFile(Title.FILE, Title.FILE + ".enc");
 		Secret.encryptFile(Client.FILE, Client.FILE + ".enc");
 		Secret.encryptFile(Occurrence.FILE, Occurrence.FILE + ".enc");
+		Secret.encryptFile(ProductTransaction.FILE, ProductTransaction.FILE + ".enc");
 	}
 }
