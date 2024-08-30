@@ -1,3 +1,4 @@
-bin
-data/*
-!data/.gitkeep
+*.swp
+.venv/
+__pycache__/
+instance/

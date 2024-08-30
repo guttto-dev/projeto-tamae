@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block main %}
+	<p>{{ error_message }}</p>
+	{% if not one_way %}
+		<a href="#" onclick="window.history.back()">Go back</a>
+		<br>
+	{% endif %}
+	<a href="/">Go to start page</a>
+{% endblock %}
