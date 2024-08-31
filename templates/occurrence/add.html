@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block main %}
+	<form action="{{ url_for('occurrence.add_page') }}" method="post">
+		<label for="type">Type:
+			<select name="type" required>
+				<option value="">Please select</option>
+				<option value="int" selected>Internal</option>
+				<option value="erp">ERP</option>
+			</select>
+		</label>
+		<br>
+		<label for="text">
+			<textarea name="text" rows="5" cols="50" required></textarea>
+		</label>
+		<br>
+		<label for="identify_user">Register this occurrence under your user "{{ g.current_user.username }}"?
+			<input type="checkbox" name="identify_user" checked>
+		</label>
+		<br>
+		<button type="submit">Add</button>
+	</form>
+	<p><a href="#" onclick="window.history.back()">Go back</a></p>
+</p>
+{% endblock %}

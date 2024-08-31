@@ -4,4 +4,15 @@
 	<nav>
 		<a href="{{ url_for('logout_page') }}">Logout</a>
 	</nav>
+	{% if current_user.access_level == 'man' %}
+		<ul>
+			<li><a href="{{ url_for('product.index') }}">Products</li>
+			<li><a href="{{ url_for('client.index') }}">Clients</li>
+			<li><a href="{{ url_for('occurrence.index') }}">Occurrences</li>
+		</ul>
+	{% elif current_user.access_level == 'op' %}
+		<ul>
+			<li><a href="{{ url_for('client.index') }}">Clients</li>
+		</ul>
+	{% endif %}
 {% endblock %}

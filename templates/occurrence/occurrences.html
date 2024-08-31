@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block main %}
+	<nav>
+		<a href="/">Go to start page</a>
+	</nav>
+	<table id="occurrence">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Type</th>
+				<th>User</th>
+				<th>Resolved</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for occ in occurrences %}
+			<tr>
+				<td>{{ occ.id }}</td>
+				<td>{{ occ.type|upper }}</td>
+				<td>{{ occ.user.username if occ.user else 'N/A' }}</td>
+				<td>{{ occ.is_solved }}</td>
+				<td>
+					<a href="{{ url_for('occurrence.read_page', id=occ.id) }}">View</a>
+					<a href="{{ url_for('occurrence.resolve_page', id=occ.id) }}">Mark as resolved</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
