@@ -1,0 +1,66 @@
+{% extends "_base.html" %}
+{% block main %}
+<nav>
+	<a href="{{ url_for('.empty_order', id=order.id) }}">Empty</a>
+	<a href="{{ url_for('.cancel_order', id=order.id) }}">Cancel</a>
+</nav>
+<table id="product-order">
+	<thead>
+		<tr>
+			<th>Product</th>
+			<th>Quantity</th>
+			<th>Unit price</th>
+			<th>Price</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for product_t in product_ts %}
+		<tr>
+			<td>{{ product_t.product.name }}</td>
+			<td>{{ -product_t.units }}</td>
+			<td>{{ product_t.unit_price / 100 }}</td>
+			<td>{{ product_t.total_price / 100 }}</td>
+			<td>
+				<a href="{{ url_for('.remove_from_order', id=product_t.id) }}">Remove</a>
+			</td>
+		</tr>
+		{% endfor %}
+		<tr>
+			<form action="{{ url_for('.add_page') }}" method="post">
+				<td>
+					<select name="product_id" required>
+						<option value="">Please select</option>
+						{% for product in products %}
+						<option value="{{ product.id }}">{{ product.name }}</option>
+						{% endfor %}
+					</select>
+				</td>
+				<td>
+					<input name="units" type="number" min="1" max="10000" step="1" value="1" required />
+				</td>
+				<td>-</td>
+				<td>-</td>
+				<td>
+					<button type="submit">Add</button>
+				</td>
+			</form>
+		</tr>
+		<tr>
+			<td colspan="3" style="text-align: right;">Total</th>
+			<td>
+				{% if not product_ts %}
+				-
+				{% else %}
+				{{ (product_ts|sum(attribute='total_price')) / 100 }}
+				{% endif %}
+			</td>
+			<td>
+				{% if product_ts %}
+				<a href="{{ url_for('.finish_page') }}">Checkout</a>
+				{% endif %}
+			</td>
+		</tr>
+	</tbody>
+</table>
+{% endblock %}

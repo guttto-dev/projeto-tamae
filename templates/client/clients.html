@@ -1,29 +1,29 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
 {% block main %}
-	<nav>
-		<a href="{{ url_for('client.add_page') }}">Add new client</a>
-		<a href="/">Go to start page</a>
-	</nav>
-	<table id="clients">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Phone number</th>
-				<th>Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for client in clients %}
-			{% if not client.is_deleted %}
-			<tr>
-				<td>{{ client.name }}</td>
-				<td>{{ client.phone_number }}</td>
-				<td>
-					<a href="{{ url_for('client.update_page', id=client.id) }}">Update</a>
-				</td>
-			</tr>
-			{% endif %}
-			{% endfor %}
-		</tbody>
-	</table>
+<nav>
+	<a href="{{ url_for('.add_page') }}">Add new client</a>
+	<a href="{{ url_for('index.start_page') }}">Go to start page</a>
+</nav>
+<table id="clients">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Phone number</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for client in clients %}
+		{% if not client.is_deleted %}
+		<tr>
+			<td>{{ client.name }}</td>
+			<td>{{ client.phone_number }}</td>
+			<td>
+				<a href="{{ url_for('.update_page', id=client.id) }}">Update</a>
+			</td>
+		</tr>
+		{% endif %}
+		{% endfor %}
+	</tbody>
+</table>
 {% endblock %}

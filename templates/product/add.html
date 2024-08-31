@@ -1,39 +1,32 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
 {% block main %}
-	<form action="{{ url_for('product.add_page') }}" method="post">
-		<label for="name">Name:
-			<input type="text" name="name" required>
-		</label>
-		<br>
-		<label for="category_id">Category:
-			<select name="category_id" required>
-				{% for category in categories %}
-				<option value="{{ category.id }}">{{ category.name }}</option>
-				{% endfor %}
-				<option value="" selected>None</option>
-			</select>
-		</label>
-		<br>
-		<label for="unit">Unit:
-			<select name="unit" required>
-				<option value="each" selected>Per unit</option>
-				<option value="kg">Kilogram</option>
-			</select>
-		</label>
-		<br>
-		<label for="unit_price">Price:
-			<input name="unit_price" type="number" min="0.10" max="10000.00" step="0.01" required />
-		</label>
-		<br>
-		<label for="units_stored">Units stored:
-			<input name="units_stored" type="number" min="1" max="10000" step="1" required />
-		</label>
-		<br>
-		<label for="units_min">Units minimum:
-			<input name="units_min" type="number" min="0" max="10000" step="1" required />
-		</label>
-		<br>
-		<button type="submit">Add</button>
-	</form>
-	<p><a href="{{ url_for('product.index') }}">Go back</a></p>
+<form action="{{ url_for('.add_page') }}" method="post">
+	<label for="name">Name:
+		<input type="text" name="name" required>
+	</label>
+	<br>
+	<label for="category_id">Category:
+		<select name="category_id">
+			{% for category in categories %}
+			<option value="{{ category.id }}">{{ category.name }}</option>
+			{% endfor %}
+			<option value="" selected>None</option>
+		</select>
+	</label>
+	<br>
+	<label for="unit_price">Price:
+		<input name="unit_price" type="number" min="0.10" max="10000.00" step="0.01" required />
+	</label>
+	<br>
+	<label for="units_stored">Units stored:
+		<input name="units_stored" type="number" min="1" max="10000" step="1" required />
+	</label>
+	<br>
+	<label for="units_min">Units minimum:
+		<input name="units_min" type="number" min="0" max="10000" step="1" required />
+	</label>
+	<br>
+	<button type="submit">Add</button>
+</form>
+<p><a href="{{ url_for('.start_page') }}">Go back</a></p>
 {% endblock %}

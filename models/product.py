@@ -1,3 +1,5 @@
+from enum import Enum
+
 from util import db
 
 
@@ -9,11 +11,11 @@ class Product(db.Model):
     category_id = db.Column(db.Integer,
                             db.ForeignKey('ProductCategory.id'),
                             nullable=True)
-    unit = db.Column(db.Text, nullable=False) # 'each' or 'kg'
     unit_price = db.Column(db.Integer, nullable=False)
     units_stored = db.Column(db.Integer, nullable=False)
     units_min = db.Column(db.Integer, nullable=False)
     units_sold = db.Column(db.Integer, nullable=False)
+    transactions = db.relationship('ProductTransaction', backref='product')
 
     def __repr__(self):
         return f'<Product id={self.id} name={self.name}>'
@@ -37,9 +39,9 @@ class ProductOrder(db.Model):
     client_id = db.Column(db.Integer,
                            db.ForeignKey('Client.id'),
                            nullable=True)
-    value = db.Column(db.Integer, nullable=False)
-    is_paid = db.Column(db.Boolean, nullable=False)
-    datetime = db.Column(db.DateTime, nullable=False)
+    value = db.Column(db.Integer, nullable=False, default=0)
+    is_paid = db.Column(db.Boolean, nullable=True)
+    checkout_datetime = db.Column(db.DateTime, nullable=True)
     products = db.relationship('ProductTransaction', backref='order')
 
     def __repr__(self):
@@ -58,6 +60,11 @@ class ProductTransaction(db.Model):
                            nullable=True)
     unit_price = db.Column(db.Integer, nullable=False)
     units = db.Column(db.Integer, nullable=False)
+    is_valid = db.Column(db.Boolean, nullable=False)
+
+    @property
+    def total_price(self):
+        return self.unit_price * abs(self.units)
 
     def __repr__(self):
         return f'<ProductTransaction id={self.id} product_id={self.product_id} order_id={self.order_id}>'

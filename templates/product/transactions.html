@@ -1,26 +1,26 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
 {% block main %}
-	<nav>
-		<a href="/product">Go back</a>
-	</nav>
-	<table id="transactions">
-		<thead>
-			<tr>
-				<th>Product ID</th>
-				<th>Order ID</th>
-				<th>Price at that time</th>
-				<th>Unit change</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for transaction in product_ts %}
-			<tr>
-				<td>{{ transaction.product_id }}</td>
-				<td>{{ transaction.order_id if transaction.order_id else 'Inserted (N/A)' }}</td>
-				<td>{{ transaction.unit_price/100 }}</td>
-				<td>{{ transaction.units }}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+<nav>
+	<a href="{{ url_for('.start_page') }}">Go back</a>
+</nav>
+<table id="transactions">
+	<thead>
+		<tr>
+			<th>Product ID</th>
+			<th>Order ID</th>
+			<th>Price at that time</th>
+			<th>Unit change</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for transaction in product_ts %}
+		<tr>
+			<td>{{ transaction.product_id }}</td>
+			<td>{{ transaction.order_id if transaction.order_id else 'Inserted (N/A)' }}</td>
+			<td>{{ transaction.unit_price/100 }}</td>
+			<td>{{ transaction.units }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
 {% endblock %}

@@ -1,29 +1,29 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
 {% block main %}
-	<form action="{{ url_for('register_page') }}" method="post">
-		<label for="username">Username:
-			<input type="text" name="username" required>
-		</label>
-		<br>
-		<label for="password">Password:
-			<input type="password" name="password" required>
-		</label>
-		<br>
-		{% if g.first_user %}
-			<input type="hidden" name="access_level" value="adm">
-		{% else %}
-		<label for="access_level">Access level:
-				<select name="access_level" required>
-					<option value="adm">Admin</option>
-					<option value="man">Manager</option>
-					<option value="op" selected>Operator</option>
-				</select>
-		</label>
-		<br>
-		{% endif %}
-		<button type="submit">Register</button>
-	</form>
-	{% if not g.first_user %}
-		<p><a href="{{ url_for('start_page') }}">Go back</a></p>
+<form action="{{ url_for('.register_page') }}" method="post">
+	<label for="username">Username:
+		<input type="text" name="username" required>
+	</label>
+	<br>
+	<label for="password">Password:
+		<input type="password" name="password" required>
+	</label>
+	<br>
+	{% if g.first_user %}
+	<input type="hidden" name="access_level" value="adm">
+	{% else %}
+	<label for="access_level">Access level:
+		<select name="access_level" required>
+			<option value="adm">Admin</option>
+			<option value="man">Manager</option>
+			<option value="op" selected>Operator</option>
+		</select>
+	</label>
+	<br>
 	{% endif %}
+	<button type="submit">Register</button>
+</form>
+{% if not g.first_user %}
+<p><a href="{{ url_for('.start_page') }}">Go back</a></p>
+{% endif %}
 {% endblock %}

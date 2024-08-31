@@ -1,24 +1,24 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
 {% block main %}
-	<form action="{{ url_for('client.update_page', id=client.id) }}" method="post">
-		<label for="name">Name:
-			<input type="text" name="name" value="{{ client.name }}" placeholder="{{ client.name }}" required>
-		</label>
-		<br>
-		<label for="phone_number">Phone number:
-			<input type="tel" name="phone_number"  pattern="^\+?[0-9]{10,15}$"
-				   value="{{ client.phone_number }}" placeholder="{{ client.phone_number }}" required>
-		</label>
-		Example: 87912345678<br>
-		<button type="submit">Update</button>
-		<button type="button" id="btn-delete">DELETE</button>
-	</form>
-	<p><a href="{{ url_for('client.index') }}">Go back</a></p>
-	<script>
-		document.getElementById('btn-delete').addEventListener('click', function() {
-			if (confirm('Are you sure you want to delete "{{ client.name }}"?')) {
-				window.location.href = '{{ url_for('client.update_page', id=client.id, delete=1) }}';
-            }
-        });
-	</script>
+<form action="{{ url_for('.update_page', id=client.id) }}" method="post">
+	<label for="name">Name:
+		<input type="text" name="name" value="{{ client.name }}" placeholder="{{ client.name }}" required>
+	</label>
+	<br>
+	<label for="phone_number">Phone number:
+		<input type="tel" name="phone_number"  pattern="^\+?[0-9]{10,15}$"
+			   value="{{ client.phone_number }}" placeholder="{{ client.phone_number }}" required>
+	</label>
+	Example: 87912345678<br>
+	<button type="submit">Update</button>
+	<button type="button" onclick="deleteClient('{{ client.name }}', '{{ url_for('.delete_client', id=client.id) }}')">DELETE</button>
+</form>
+<p><a href="{{ url_for('.start_page') }}">Go back</a></p>
+{% endblock %}
+{% block script %}
+function deleteClient(name, href) {
+	if (confirm(`Are you sure you want to delete "${name}"?`)) {
+		window.location.href = href;
+	}
+}
 {% endblock %}
