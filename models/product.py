@@ -17,6 +17,21 @@ class Product(db.Model):
     units_sold = db.Column(db.Integer, nullable=False)
     transactions = db.relationship('ProductTransaction', backref='product')
 
+    @classmethod
+    def add_to_db(cls, **new_product_attrs):
+        product = cls(**new_product_attrs)
+        db.session.add(product)
+        db.session.commit()
+
+        product_t = ProductTransaction(product_id=product.id,
+                                       order_id=None,
+                                       unit_price=product.unit_price,
+                                       units=product.units_stored,
+                                       is_valid=True)
+        db.session.add(product_t)
+        db.session.commit()
+        return product
+
     def __repr__(self):
         return f'<Product id={self.id} name={self.name}>'
 

@@ -6,7 +6,7 @@
 <table id="transactions">
 	<thead>
 		<tr>
-			<th>Product ID</th>
+			<th>Product</th>
 			<th>Order ID</th>
 			<th>Price at that time</th>
 			<th>Unit change</th>
@@ -15,7 +15,7 @@
 	<tbody>
 		{% for transaction in product_ts %}
 		<tr>
-			<td>{{ transaction.product_id }}</td>
+			<td>{{ transaction.product.name }}</td>
 			<td>{{ transaction.order_id if transaction.order_id else 'Inserted (N/A)' }}</td>
 			<td>{{ transaction.unit_price/100 }}</td>
 			<td>{{ transaction.units }}</td>

@@ -19,7 +19,7 @@
 		<tr>
 			<td>{{ order.checkout_datetime }}</td>
 			<td>{{ order.id }}</td>
-			<td>{{ order.client }}</td>
+			<td>{{ order.client.id }}</td>
 			<td>{{ order.value / 100 }}</td>
 			<td>
 				{% if not order.is_paid %}

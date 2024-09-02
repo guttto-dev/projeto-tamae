@@ -20,6 +20,12 @@ product_bp = Blueprint('product', __name__, url_prefix='/product')
 @requires_access_level(AccessLevel.MANAGER)
 def start_page():
     products = Product.query.order_by(Product.category_id, desc(Product.units_sold), Product.name).all()
+    for product in products:
+        if product.units_stored < product.units_min:
+            if product.category:
+                flash(f'Product "{product.name}" of category {product.category.name} has less than minimum quantity.', 'warn')
+            else:
+                flash(f'Product "{product.name}" has less than minimum quantity.', 'warn')
     return render_template('product/products.html', page_title='Products',
                            products=products)
 
@@ -39,23 +45,13 @@ def add_page():
         if category_id:
             category_id = int(category_id)
 
-        product = Product(name=name,
+        product = Product.add_to_db(name=name,
                           category_id=category_id,
                           unit_price=int(float(request.form['unit_price']) * 100),
                           units_stored=int(request.form['units_stored']),
                           units_min=int(request.form['units_min']),
                           units_sold=0)
-        db.session.add(product)
-        db.session.commit()
-
-        product_t = ProductTransaction(product_id=product.id,
-                                       order_id=None,
-                                       unit_price=product.unit_price,
-                                       units=product.units_stored,
-                                       is_valid=True)
-        db.session.add(product_t)
-        db.session.commit()
-        flash('Product added successfully.', 'info')
+        flash(f'Product #{product.id} added successfully.', 'info')
         return redirect(url_for('.start_page'))
 
     return render_template('product/add.html', page_title='Add new product',

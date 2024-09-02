@@ -1,3 +1,7 @@
+# TODO: categories CRUD
+# TODO: .arff generator
+# TODO: languages
+
 import os
 
 from flask import (
@@ -72,25 +76,22 @@ def internal_error(e):
 with app.app_context():
     if not os.path.exists(DATABASE):
         db.create_all()
-        products = [
-                Product(name='Abacaxi',
-                        category_id=None,
-                        unit_price=389,
-                        units_stored=50,
-                        units_min=48,
-                        units_sold=0),
-                Product(name='Abacate',
-                        category_id=None,
-                        unit_price=650,
-                        units_stored=20,
-                        units_min=10,
-                        units_sold=0),
-                Product(name='Pneu Continental Aro 14',
-                        category_id=None,
-                        unit_price=37490,
-                        units_stored=4,
-                        units_min=2,
-                        units_sold=0),
-                ]
-        db.session.add_all(products)
-        db.session.commit()
+
+        Product.add_to_db(name='Abacaxi',
+                          category_id=None,
+                          unit_price=389,
+                          units_stored=50,
+                          units_min=48,
+                          units_sold=0)
+        Product.add_to_db(name='Abacate',
+                          category_id=None,
+                          unit_price=650,
+                          units_stored=20,
+                          units_min=10,
+                          units_sold=0)
+        Product.add_to_db(name='Pneu Continental Aro 14',
+                          category_id=None,
+                          unit_price=37490,
+                          units_stored=4,
+                          units_min=2,
+                          units_sold=0)

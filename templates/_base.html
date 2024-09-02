@@ -21,7 +21,7 @@
 		{% block main %}
 		{% endblock %}
 		</main>
-		<hr>
+		<hr />
 		{% if g.current_user.is_authenticated and g.current_route != 'occurrence.add_page' %}
 		<small><a href="{{ url_for('occurrence.add_page', back=g.current_route) }}">⚠️ Register occurrence</a></small>
 		{% endif %}
