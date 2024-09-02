@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+		<title>{{ page_title }}</title>
+	</head>
+	<body>
+		<h1>{{ page_title }}</h1>
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+			<ul id="flashes">
+			{% for category, message in messages %}
+				<li class="flash-{{ category }}">{{ message }}</li>
+			{% endfor %}
+			</ul>
+			{% endif %}
+		{% endwith %}
+		<main>
+		{% block main %}
+		{% endblock %}
+		</main>
+		<hr />
+		{% if g.current_user.is_authenticated and g.current_route != 'occurrence.add_page' %}
+		<small><a href="{{ url_for('occurrence.add_page', back=g.current_route) }}">⚠️ Register occurrence</a></small>
+		{% endif %}
+	</body>
+	<script>{% block script %}{% endblock %}</script>
+</html>

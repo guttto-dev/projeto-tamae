@@ -1,0 +1,33 @@
+html {
+	font-family: arial, sans-serif;
+}
+
+:link    { color: #0000EE; }
+:visited { color: #0000EE; }
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+td, th {
+	border: 1px solid #dddddd;
+	text-align: left;
+	padding: 8px;
+}
+
+tbody tr:nth-child(odd) {
+	background-color: #dddddd;
+}
+
+nav {
+	padding: 8px;
+}
+
+nav>*, td>* {
+	padding-right: 16px;
+}
+
+.flash-info { color: #444; }
+.flash-warn { color: #bf6128; }
+.flash-error { color: #ee0202; font-weight: bold; }

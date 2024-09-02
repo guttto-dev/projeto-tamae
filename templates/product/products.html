@@ -1,0 +1,36 @@
+{% extends "_base.html" %}
+{% block main %}
+<nav>
+	<a href="{{ url_for('.add_page') }}">Add new product</a>
+	<a href="{{ url_for('.transactions_page') }}">Stock changes</a>
+	<a href="{{ url_for('index.start_page') }}">Go to start page</a>
+</nav>
+<table id="products">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Category</th>
+			<th>Price</th>
+			<th>Units stored</th>
+			<th>Units minimum</th>
+			<th>Units sold</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for product in products %}
+		<tr>
+			<td>{{ product.name }}</td>
+			<td>{{ product.category }}</td>
+			<td>{{ product.unit_price/100 }}</td>
+			<td>{{ product.units_stored }}</td>
+			<td>{{ product.units_min }}</td>
+			<td>{{ product.units_sold }}</td>
+			<td>
+				<a href="{{ url_for('.update_page', id=product.id) }}">Update</a>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
