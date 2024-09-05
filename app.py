@@ -1,4 +1,3 @@
-# TODO: categories CRUD
 # TODO: .arff generator
 # TODO: languages
 
@@ -78,19 +77,16 @@ with app.app_context():
         db.create_all()
 
         Product.add_to_db(name='Abacaxi',
-                          category_id=None,
                           unit_price=389,
                           units_stored=50,
                           units_min=48,
                           units_sold=0)
         Product.add_to_db(name='Abacate',
-                          category_id=None,
                           unit_price=650,
                           units_stored=20,
                           units_min=10,
                           units_sold=0)
         Product.add_to_db(name='Pneu Continental Aro 14',
-                          category_id=None,
                           unit_price=37490,
                           units_stored=4,
                           units_min=2,

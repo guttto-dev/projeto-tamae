@@ -10,7 +10,7 @@ from flask import (
 from sqlalchemy import desc
 
 from models.user import AccessLevel
-from models.product import Product, ProductCategory, ProductTransaction
+from models.product import Product, ProductTransaction
 from util import db, requires_access_level
 
 product_bp = Blueprint('product', __name__, url_prefix='/product')
@@ -19,13 +19,10 @@ product_bp = Blueprint('product', __name__, url_prefix='/product')
 @product_bp.route('/')
 @requires_access_level(AccessLevel.MANAGER)
 def start_page():
-    products = Product.query.order_by(Product.category_id, desc(Product.units_sold), Product.name).all()
+    products = Product.query.order_by(desc(Product.units_sold), desc(Product.id), Product.name).all()
     for product in products:
         if product.units_stored < product.units_min:
-            if product.category:
-                flash(f'Product "{product.name}" of category {product.category.name} has less than minimum quantity.', 'warn')
-            else:
-                flash(f'Product "{product.name}" has less than minimum quantity.', 'warn')
+            flash(f'Product "{product.name}" has less than minimum quantity.', 'warn')
     return render_template('product/products.html', page_title='Products',
                            products=products)
 
@@ -33,7 +30,6 @@ def start_page():
 @product_bp.route('/add', methods=['GET', 'POST'])
 @requires_access_level(AccessLevel.MANAGER)
 def add_page():
-    categories = ProductCategory.query.all()
     if request.method == 'POST':
         name = request.form['name']
 
@@ -41,12 +37,7 @@ def add_page():
             flash(f'Product "{name}" already exists.', 'error')
             return redirect(url_for('.add_page'))
 
-        category_id = request.form['category_id'] or None
-        if category_id:
-            category_id = int(category_id)
-
         product = Product.add_to_db(name=name,
-                          category_id=category_id,
                           unit_price=int(float(request.form['unit_price']) * 100),
                           units_stored=int(request.form['units_stored']),
                           units_min=int(request.form['units_min']),
@@ -54,8 +45,7 @@ def add_page():
         flash(f'Product #{product.id} added successfully.', 'info')
         return redirect(url_for('.start_page'))
 
-    return render_template('product/add.html', page_title='Add new product',
-                           categories=categories)
+    return render_template('product/add.html', page_title='Add new product')
 
 
 @product_bp.route('/update/<int:id>', methods=['GET', 'POST'])
@@ -63,7 +53,6 @@ def add_page():
 def update_page(id):
     product = Product.query.get_or_404(id)
 
-    categories = ProductCategory.query.all()
     if request.method == 'POST':
         name = request.form['name']
 
@@ -71,11 +60,6 @@ def update_page(id):
             flash(f'Product "{name}" already exists.', 'error')
             return redirect(url_for('.start_page'))
 
-        category_id = request.form['category_id'] or None
-        if category_id:
-            category_id = int(category_id)
-
-        product.category_id = category_id
         product.unit_price = int(float(request.form['unit_price']) * 100)
         units_stored = int(request.form['units_stored'])
         product.units_min = int(request.form['units_min'])
@@ -91,7 +75,7 @@ def update_page(id):
         return redirect(url_for('.start_page'))
 
     return render_template('product/update.html', page_title=f'Update product "{product.name}"',
-                           product=product, categories=categories)
+                           product=product)
 
 
 @product_bp.route('/transactions')

@@ -9,7 +9,6 @@
 	<thead>
 		<tr>
 			<th>Name</th>
-			<th>Category</th>
 			<th>Price</th>
 			<th>Units stored</th>
 			<th>Units minimum</th>
@@ -21,7 +20,6 @@
 		{% for product in products %}
 		<tr>
 			<td>{{ product.name }}</td>
-			<td>{{ product.category }}</td>
 			<td>{{ product.unit_price/100 }}</td>
 			<td>{{ product.units_stored }}</td>
 			<td>{{ product.units_min }}</td>

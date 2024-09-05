@@ -8,9 +8,6 @@ class Product(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, unique=True, nullable=False)
-    category_id = db.Column(db.Integer,
-                            db.ForeignKey('ProductCategory.id'),
-                            nullable=True)
     unit_price = db.Column(db.Integer, nullable=False)
     units_stored = db.Column(db.Integer, nullable=False)
     units_min = db.Column(db.Integer, nullable=False)
@@ -34,17 +31,6 @@ class Product(db.Model):
 
     def __repr__(self):
         return f'<Product id={self.id} name={self.name}>'
-
-
-class ProductCategory(db.Model):
-    __tablename__ = 'ProductCategory'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text, unique=True, nullable=False)
-    products = db.relationship('Product', backref='category')
-
-    def __repr__(self):
-        return f'<ProductCategory id={self.id} name={self.name}>'
 
 
 class ProductOrder(db.Model):
