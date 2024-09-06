@@ -1,3 +1,4 @@
+from datetime import datetime
 from enum import Enum
 
 from util import db
@@ -44,6 +45,38 @@ class ProductOrder(db.Model):
     is_paid = db.Column(db.Boolean, nullable=True)
     checkout_datetime = db.Column(db.DateTime, nullable=True)
     products = db.relationship('ProductTransaction', backref='order')
+
+    class NotEnoughUnitsError(Exception):
+        def __init__(self, product_t):
+            self.product_t = product_t
+            self.message = f'Product "{product_t.product.name}" does not have enough units.'
+            super().__init__(self.message)
+
+    class CannotFinishError(Exception):
+        def __init__(self, order):
+            self.order = order
+            self.message = f'Order #{order.id} cannot be finished.'
+            super().__init__(self.message)
+
+    def add_to_db(self, order, *product_transactions):
+        err = False
+        for product_t in product_transactions:
+            try:
+                if abs(product_t.units) > product_t.product.units_stored:
+                    raise NotEnoughUnits(product_t)
+                product_t.product.units_stored -= abs(product_t.units)
+                product_t.product.units_sold += abs(product_t.units)
+                product_t.is_valid = True
+                order.value += product_t.total_price
+            except NotEnoughUnitsError as e:
+                err = True
+                print('NotEnoughUnitsError: {e.message}', file=sys.stderr)
+                flash(e.message, 'error')
+        if err:
+            db.session.rollback()
+            raise CannotFinishError(order)
+        order.checkout_datetime = datetime.now()
+        db.session.commit()
 
     def __repr__(self):
         return f'<ProductOrder id={self.id} client_id={self.client_id}>'

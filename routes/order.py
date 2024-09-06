@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from flask import (
         Blueprint,
         render_template,
@@ -53,7 +51,7 @@ def add_page():
         session['order_id'] = order.id
 
     order = ProductOrder.query.get_or_404(session['order_id'])
-    products = Product.query.all()
+    products = Product.query.order_by(Product.name).all()
     product_ts = ProductTransaction.query.filter_by(order_id=session['order_id']).all()
 
     if request.method == 'POST':
@@ -89,22 +87,10 @@ def finish_page():
             order.client_id = int(client_id)
         order.is_paid = make_pay
         product_ts = ProductTransaction.query.filter_by(order_id=order.id).all()
-
-        err = False
-        for product_t in product_ts:
-            if abs(product_t.units) > product_t.product.units_stored:
-                flash(f'Product "{product_t.product.name}" does not have enough units.', 'error')
-                err = True
-                continue
-            product_t.product.units_stored -= abs(product_t.units)
-            product_t.product.units_sold += abs(product_t.units)
-            product_t.is_valid = True
-            order.value += product_t.total_price
-        if err:
-            db.session.rollback()
+        try:
+            order.add_to_db(order, *product_ts)
+        except ProductOrder.CannotFinishError as e:
             return redirect(url_for('.add_page'))
-        order.checkout_datetime = datetime.now()
-        db.session.commit()
 
         session.pop('order_id')
         return redirect(url_for('.start_page'))
