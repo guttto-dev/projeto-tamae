@@ -1,5 +1,8 @@
+import sys
 from datetime import datetime
 from enum import Enum
+
+from flask import flash, has_request_context
 
 from util import db
 
@@ -70,24 +73,25 @@ class ProductOrder(db.Model):
             self.message = f'Order #{order.id} cannot be finished.'
             super().__init__(self.message)
 
-    def add_to_db(self, order, *product_transactions):
+    def add_to_db(self, *product_transactions):
         err = False
         for product_t in product_transactions:
             try:
                 if abs(product_t.units) > product_t.product.units_stored:
-                    raise NotEnoughUnits(product_t)
+                    raise ProductOrder.NotEnoughUnitsError(product_t)
                 product_t.product.units_stored -= abs(product_t.units)
                 product_t.product.units_sold += abs(product_t.units)
                 product_t.is_valid = True
-                order.value += product_t.total_price
-            except NotEnoughUnitsError as e:
+                self.value += product_t.total_price
+            except ProductOrder.NotEnoughUnitsError as e:
                 err = True
-                print('NotEnoughUnitsError: {e.message}', file=sys.stderr)
-                flash(e.message, 'error')
+                print(f'NotEnoughUnitsError: {e.message}', file=sys.stderr)
+                if has_request_context():
+                    flash(e.message, 'error')
         if err:
             db.session.rollback()
-            raise CannotFinishError(order)
-        order.checkout_datetime = datetime.now()
+            raise ProductOrder.CannotFinishError(self)
+        self.checkout_datetime = datetime.now()
         db.session.commit()
 
     def __repr__(self):

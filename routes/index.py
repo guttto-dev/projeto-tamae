@@ -16,8 +16,7 @@ from flask_login import (
         )
 
 from models.user import User, AccessLevel
-from util import db, requires_access_level
-from app import bcrypt
+from util import db, bcrypt, requires_access_level
 
 index_bp = Blueprint('index', __name__)
 

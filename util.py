@@ -3,8 +3,10 @@ from functools import wraps
 from flask import redirect, url_for, flash
 from flask_login import login_required, current_user
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 
 db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 
 def requires_access_level(*access_levels):

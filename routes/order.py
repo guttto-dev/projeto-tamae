@@ -87,8 +87,9 @@ def finish_page():
             order.client_id = int(client_id)
         order.is_paid = make_pay
         product_ts = ProductTransaction.query.filter_by(order_id=order.id).all()
+
         try:
-            order.add_to_db(order, *product_ts)
+            order.add_to_db(*product_ts)
         except ProductOrder.CannotFinishError as e:
             return redirect(url_for('.add_page'))
 
