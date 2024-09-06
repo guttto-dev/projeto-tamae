@@ -14,7 +14,7 @@ from flask import (
 from flask_login import LoginManager, current_user
 from flask_bcrypt import Bcrypt
 
-from models.user import User
+from models.user import User, AccessLevel
 from models.product import Product
 from util import db, requires_access_level
 
@@ -75,6 +75,21 @@ def internal_error(e):
 with app.app_context():
     if not os.path.exists(DATABASE):
         db.create_all()
+
+        #
+        # User examples
+        #
+
+        db.session.add(User(username='adm',
+                            password=bcrypt.generate_password_hash("1234").decode('utf-8'),
+                            access_level=AccessLevel.ADMIN))
+        db.session.add(User(username='man',
+                            password=bcrypt.generate_password_hash("1234").decode('utf-8'),
+                            access_level=AccessLevel.MANAGER))
+        db.session.add(User(username='op',
+                            password=bcrypt.generate_password_hash("1234").decode('utf-8'),
+                            access_level=AccessLevel.OPERATOR))
+        db.session.commit()
 
         #
         # Product examples
