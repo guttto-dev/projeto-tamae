@@ -59,7 +59,7 @@ def add_page():
         product_t = ProductTransaction(product_id=product.id,
                                        order_id=session['order_id'],
                                        unit_price=product.unit_price,
-                                       units=-int(request.form['units']),
+                                       units=-float(request.form['units']),
                                        is_valid=False)
         db.session.add(product_t)
         db.session.commit()

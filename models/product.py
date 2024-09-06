@@ -10,10 +10,22 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, unique=True, nullable=False)
     unit_price = db.Column(db.Integer, nullable=False)
-    units_stored = db.Column(db.Integer, nullable=False)
+    units_stored = db.Column(db.Float, nullable=False)
     units_min = db.Column(db.Integer, nullable=False)
-    units_sold = db.Column(db.Integer, nullable=False, default=0)
+    units_sold = db.Column(db.Float, nullable=False, default=0)
     transactions = db.relationship('ProductTransaction', backref='product')
+
+    @property
+    def units_stored_i(self):
+        if self.units_stored.is_integer():
+            return int(self.units_stored)
+        return self.units_stored
+
+    @property
+    def units_sold_i(self):
+        if self.units_sold.is_integer():
+            return int(self.units_sold)
+        return self.units_sold
 
     @classmethod
     def add_to_db(cls, **new_product_attrs):
@@ -93,8 +105,14 @@ class ProductTransaction(db.Model):
                            db.ForeignKey('ProductOrder.id'),
                            nullable=True)
     unit_price = db.Column(db.Integer, nullable=False)
-    units = db.Column(db.Integer, nullable=False)
+    units = db.Column(db.Float, nullable=False)
     is_valid = db.Column(db.Boolean, nullable=False)
+
+    @property
+    def units_i(self):
+        if self.units.is_integer():
+            return int(self.units)
+        return self.units
 
     @property
     def total_price(self):
