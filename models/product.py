@@ -11,7 +11,7 @@ class Product(db.Model):
     unit_price = db.Column(db.Integer, nullable=False)
     units_stored = db.Column(db.Integer, nullable=False)
     units_min = db.Column(db.Integer, nullable=False)
-    units_sold = db.Column(db.Integer, nullable=False)
+    units_sold = db.Column(db.Integer, nullable=False, default=0)
     transactions = db.relationship('ProductTransaction', backref='product')
 
     @classmethod
