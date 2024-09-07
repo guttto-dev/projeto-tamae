@@ -1,16 +1,19 @@
+import io
+
 from flask import (
         Blueprint,
         render_template,
         request,
         redirect,
         url_for,
-        flash
+        flash,
+        send_file,
         )
 
 from sqlalchemy import desc
 
 from models.user import AccessLevel
-from models.product import Product, ProductTransaction
+from models.product import Product, ProductOrder, ProductTransaction
 from util import db, requires_access_level
 
 product_bp = Blueprint('product', __name__, url_prefix='/product')
@@ -95,3 +98,30 @@ def delete_product(id):
     db.session.commit()
     flash('Product deleted successfully.', 'info')
     return redirect(url_for('.start_page'))
+
+
+@product_bp.route('/download_arff_data')
+@requires_access_level(AccessLevel.MANAGER)
+def download_arff_data():
+    title = 'product_orders'
+    product_names = [name[0] for name in db.session.query(Product.name).order_by(Product.id).all()]
+    header = f'@relation {title}'
+    attributes = '\n'.join(f'@attribute "{name}" {{sim}}' for name in product_names)
+    data_header = '@data'
+
+    orders = ProductOrder.query.all()
+    data_lines = []
+    for order in orders:
+        data_line = ['?'] * len(product_names)
+        for product_t in order.products:
+            name = product_t.product.name
+            if name in product_names:
+                idx = product_names.index(name)
+                data_line[idx] = 'sim'
+        data_lines.append(','.join(data_line))
+
+    arff_content = f'{header}\n\n{attributes}\n\n{data_header}\n' + '\n'.join(data_lines)
+    file_stream = io.BytesIO()
+    file_stream.write(arff_content.encode('utf-8'))
+    file_stream.seek(0)
+    return send_file(file_stream, as_attachment=True, download_name=f'{title}.arff', mimetype='text/plain')

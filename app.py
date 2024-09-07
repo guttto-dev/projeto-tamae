@@ -1,4 +1,3 @@
-# TODO: .arff generator
 # TODO: languages
 # TODOmaybe: slugify
 

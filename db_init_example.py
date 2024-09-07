@@ -1,5 +1,7 @@
 import random
 
+from sqlalchemy import func
+
 from models.user import User, AccessLevel
 from models.product import Product, ProductOrder, ProductTransaction
 from util import db, bcrypt
@@ -180,8 +182,8 @@ Product.add_to_db(name='Desodorante Rexona Aerosol 150ml',
 
 Product.add_to_db(name='Pneu Continental Aro 14',
                   unit_price=37490,
-                  units_stored=4,
-                  units_min=2)
+                  units_stored=40,
+                  units_min=20)
 
 #
 # Order examples
@@ -207,6 +209,20 @@ for assoc in association_examples:
                                            order_id=order.id,
                                            unit_price=product.unit_price,
                                            units=-quantities[i],
+                                           is_valid=False)]
+        if random.randint(0, 1) == 0:
+            random_product = Product.query.order_by(func.random()).first()
+            product_ts += [ProductTransaction(product_id=random_product.id,
+                                           order_id=order.id,
+                                           unit_price=random_product.unit_price,
+                                           units=-1,
+                                           is_valid=False)]
+        if random.randint(0, 1) == 0:
+            random_product = Product.query.order_by(func.random()).first()
+            product_ts += [ProductTransaction(product_id=random_product.id,
+                                           order_id=order.id,
+                                           unit_price=random_product.unit_price,
+                                           units=-1,
                                            is_valid=False)]
         db.session.add_all(product_ts)
         db.session.commit()
