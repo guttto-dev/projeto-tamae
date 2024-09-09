@@ -97,7 +97,7 @@ def finish_page():
         return redirect(url_for('.start_page'))
 
     return render_template('order/finish.html', page_title=f'New order #{session["order_id"]}',
-                          clients=clients)
+                           clients=clients)
 
 
 @order_bp.route('/remove-from-order/<int:id>')
@@ -114,7 +114,7 @@ def remove_from_order(id):
 def empty_order(id):
     if not 'order_id' in session:
         return redirect(url_for('.start_page'))
-    product_ts = ProductTransaction.query.filter_by(order_id=session['order_id']).delete(synchronize_session=False)
+    ProductTransaction.query.filter_by(order_id=session['order_id']).delete(synchronize_session=False)
     db.session.commit()
     return redirect(url_for('.add_page'))
 

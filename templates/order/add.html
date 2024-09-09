@@ -18,7 +18,7 @@
 		{% for product_t in product_ts %}
 		<tr>
 			<td>{{ product_t.product.name }}</td>
-			<td>{{ -product_t.units }}</td>
+			<td>{{ -product_t.units_i }}</td>
 			<td>{{ product_t.unit_price / 100 }}</td>
 			<td>{{ product_t.total_price / 100 }}</td>
 			<td>

@@ -206,24 +206,24 @@ for assoc in association_examples:
         product_ts = []
         for i, product in enumerate(assoc):
             product_ts += [ProductTransaction(product_id=product.id,
-                                           order_id=order.id,
-                                           unit_price=product.unit_price,
-                                           units=-quantities[i],
-                                           is_valid=False)]
+                                              order_id=order.id,
+                                              unit_price=product.unit_price,
+                                              units=-quantities[i],
+                                              is_valid=False)]
         if random.randint(0, 1) == 0:
             random_product = Product.query.order_by(func.random()).first()
             product_ts += [ProductTransaction(product_id=random_product.id,
-                                           order_id=order.id,
-                                           unit_price=random_product.unit_price,
-                                           units=-1,
-                                           is_valid=False)]
+                                              order_id=order.id,
+                                              unit_price=random_product.unit_price,
+                                              units=-1,
+                                              is_valid=False)]
         if random.randint(0, 1) == 0:
             random_product = Product.query.order_by(func.random()).first()
             product_ts += [ProductTransaction(product_id=random_product.id,
-                                           order_id=order.id,
-                                           unit_price=random_product.unit_price,
-                                           units=-1,
-                                           is_valid=False)]
+                                              order_id=order.id,
+                                              unit_price=random_product.unit_price,
+                                              units=-1,
+                                              is_valid=False)]
         db.session.add_all(product_ts)
         db.session.commit()
         order.add_to_db(*product_ts)

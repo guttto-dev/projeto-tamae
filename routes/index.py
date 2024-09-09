@@ -12,7 +12,6 @@ from flask_login import (
         login_user,
         logout_user,
         login_required,
-        current_user,
         )
 
 from models.user import User, AccessLevel
@@ -78,7 +77,7 @@ def login_page():
 
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
-            flash(f'Login successful!', 'info')
+            flash('Login successful!', 'info')
             return redirect(url_for('.start_page'))
         else:
             flash('Invalid username or password.', 'error')

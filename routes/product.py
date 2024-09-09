@@ -41,10 +41,10 @@ def add_page():
             return redirect(url_for('.add_page'))
 
         product = Product.add_to_db(name=name,
-                          unit_price=int(float(request.form['unit_price']) * 100),
-                          units_stored=int(request.form['units_stored']),
-                          units_min=int(request.form['units_min']),
-                          units_sold=0)
+                                    unit_price=int(float(request.form['unit_price']) * 100),
+                                    units_stored=int(request.form['units_stored']),
+                                    units_min=int(request.form['units_min']),
+                                    units_sold=0)
         flash(f'Product #{product.id} added successfully.', 'info')
         return redirect(url_for('.start_page'))
 
@@ -85,7 +85,7 @@ def update_page(id):
 @requires_access_level(AccessLevel.MANAGER)
 def transactions_page():
     product_ts = ProductTransaction.query.order_by(desc(ProductTransaction.id)).all()
-    return render_template('product/transactions.html', page_title=f'Stock changes',
+    return render_template('product/transactions.html', page_title='Stock changes',
                            product_ts=product_ts)
 
 

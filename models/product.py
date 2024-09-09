@@ -1,6 +1,5 @@
 import sys
 from datetime import datetime
-from enum import Enum
 
 from flask import flash, has_request_context
 
@@ -54,8 +53,8 @@ class ProductOrder(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.Integer,
-                           db.ForeignKey('Client.id'),
-                           nullable=True)
+                          db.ForeignKey('Client.id'),
+                          nullable=True)
     value = db.Column(db.Integer, nullable=False, default=0)
     is_paid = db.Column(db.Boolean, nullable=True)
     checkout_datetime = db.Column(db.DateTime, nullable=True)
@@ -106,8 +105,8 @@ class ProductTransaction(db.Model):
                            db.ForeignKey('Product.id'),
                            nullable=False)
     order_id = db.Column(db.Integer,
-                           db.ForeignKey('ProductOrder.id'),
-                           nullable=True)
+                         db.ForeignKey('ProductOrder.id'),
+                         nullable=True)
     unit_price = db.Column(db.Integer, nullable=False)
     units = db.Column(db.Float, nullable=False)
     is_valid = db.Column(db.Boolean, nullable=False)
