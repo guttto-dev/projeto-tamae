@@ -1,5 +1,4 @@
 # TODO: languages
-# TODOmaybe: slugify
 
 import os
 
@@ -9,28 +8,20 @@ from flask import (
         render_template,
         request,
         )
+from flask_babel import Babel, _
 from flask_login import LoginManager, current_user
 
-from models.user import User
+from config import Config
+from models.user import User, LanguageConfig
 from util import db, bcrypt
 
-DATABASE = 'store.sqlite'
-
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default_secret_key')
-app.config.update(
-        #SESSION_COOKIE_SECURE=True,
-        #SESSION_COOKIE_HTTPONLY=True,
-        SESSION_COOKIE_SAMESITE='Lax',
-        )
-
+app.config.from_object(Config)
 login_manager = LoginManager()
 login_manager.init_app(app)
 bcrypt.init_app(app)
 db.init_app(app)
-
-DATABASE = f'{app.instance_path}/{DATABASE}'
+babel = Babel(app)
 
 from routes import *
 app.register_blueprint(index_bp)
@@ -52,23 +43,41 @@ def before_request():
     g.current_route = request.endpoint
 
 
+@app.context_processor
+def inject_locale():
+    return dict(get_locale=get_locale)
+
+
 @app.errorhandler(401)
 def page_not_found(e):
-    return render_template('error.html', page_title='Error: Unauthorized'), 401
+    return render_template('error.html', page_title=_('Error: Unauthorized')), 401
 
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('error.html', page_title='Error: Page Not Found'), 404
+    return render_template('error.html', page_title=_('Error: Page Not Found')), 404
 
 
 @app.errorhandler(500)
 def internal_error(e):
     db.session.rollback()
-    return render_template('error.html', page_title='Error: Internal Server'), 500
+    return render_template('error.html', page_title=_('Error: Internal Server')), 500
+
+
+def get_locale():
+    lang_config = LanguageConfig.query.first()
+    if lang_config:
+        return lang_config.lang
+    return Config.DEFAULT_LANGUAGE
+babel.init_app(app, locale_selector=get_locale)
 
 
 with app.app_context():
-    if not os.path.exists(DATABASE):
+    if not os.path.exists(f'{app.instance_path}/{Config.DATABASE_PATH}'):
         db.create_all()
-        import db_init_example
+        if Config.DEBUG:
+            app.debug = True
+            import db_init_example
+    if not LanguageConfig.query.first():
+        db.session.add(LanguageConfig(lang=Config.DEFAULT_LANGUAGE))
+        db.session.commit()

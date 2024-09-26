@@ -1,5 +1,18 @@
 ERP para sistema PDV fictício para disciplina de Administração para Ciência da Computação na Univasf.
 
+Usuários padrões de exemplo:
+	AcessLevel: ADMIN
+	Username: adm
+	Password: 1234
+
+	AcessLevel: MANAGER
+	Username: man
+	Password: 1234
+
+	AcessLevel: OPERATOR
+	Username: op
+	Password: 1234
+
 ### Instruções básicas para execução
 
 0. Requisitos: Python 3.11 e pip (vem normalmente instalado com o Python).

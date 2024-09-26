@@ -8,6 +8,7 @@ from flask import (
         flash,
         session
         )
+from flask_babel import _
 
 from sqlalchemy import desc
 
@@ -23,7 +24,7 @@ occurrence_bp = Blueprint('occurrence', __name__, url_prefix='/occurrence')
                        AccessLevel.MANAGER)
 def start_page():
     occurrences = Occurrence.query.order_by(Occurrence.is_solved, desc(Occurrence.id)).all()
-    return render_template('occurrence/occurrences.html', page_title='Occurrences',
+    return render_template('occurrence/occurrences.html', page_title=_('Occurrences'),
                            AccessLevel=AccessLevel,
                            occurrences=occurrences)
 
@@ -49,12 +50,12 @@ def add_page():
                                 is_solved=False)
         db.session.add(occurrence)
         db.session.commit()
-        flash('Occurrence added successfully.', 'info')
+        flash(_('Occurrence added successfully.'), 'info')
         if 'back' in session:
             return redirect(url_for(session.pop('back')))
         else:
             return redirect(url_for('index.start_page'))
-    return render_template('occurrence/add.html', page_title='Add new occurrence')
+    return render_template('occurrence/add.html', page_title=_('Add new occurrence'))
 
 
 @occurrence_bp.route('/resolve/<int:id>')
@@ -64,7 +65,7 @@ def resolve_page(id):
     occurrence = Occurrence.query.get_or_404(id)
     occurrence.is_solved = True
     db.session.commit()
-    flash(f'Occurrence {id} is marked as resolved.', 'info')
+    flash(_('Occurrence ') + id + _(' is marked as resolved.'), 'info')
     return redirect(url_for('.start_page'))
 
 

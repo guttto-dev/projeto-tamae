@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ get_locale() }}">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +23,7 @@
 		</main>
 		<hr />
 		{% if g.current_user.is_authenticated and g.current_route != 'occurrence.add_page' %}
-		<small><a href="{{ url_for('occurrence.add_page', back=g.current_route) }}">⚠️ Register occurrence</a></small>
+		<small><a href="{{ url_for('occurrence.add_page', back=g.current_route) }}">⚠️ {{ _('Register occurrence') }}</a></small>
 		{% endif %}
 	</body>
 	<script>{% block script %}{% endblock %}</script>

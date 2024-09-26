@@ -2,8 +2,8 @@
 {% block main %}
 <p>{{ error_message }}</p>
 {% if not one_way %}
-<a href="#" onclick="window.history.back()">Go back</a>
+<a href="#" onclick="window.history.back()">{{ _('Go back') }}</a>
 <br>
 {% endif %}
-<a href="{{ url_for('index.start_page') }}">Go to start page</a>
+<a href="{{ url_for('index.start_page') }}">{{ _('Go to start page') }}</a>
 {% endblock %}

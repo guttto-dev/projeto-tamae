@@ -2,6 +2,7 @@ import sys
 from datetime import datetime
 
 from flask import flash, has_request_context
+from flask_babel import _
 
 from util import db
 
@@ -63,13 +64,13 @@ class ProductOrder(db.Model):
     class NotEnoughUnitsError(Exception):
         def __init__(self, product_t):
             self.product_t = product_t
-            self.message = f'Product "{product_t.product.name}" does not have enough units.'
+            self.message = _('Product "') + product_t.product.name + _('" does not have enough units.')
             super().__init__(self.message)
 
     class CannotFinishError(Exception):
         def __init__(self, order):
             self.order = order
-            self.message = f'Order #{order.id} cannot be finished.'
+            self.message = _('Order #') + order.id + _(' cannot be finished.')
             super().__init__(self.message)
 
     def add_to_db(self, *product_transactions):

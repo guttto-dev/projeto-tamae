@@ -25,8 +25,8 @@ def start_page():
     products = Product.query.order_by(desc(Product.units_sold), desc(Product.id), Product.name).all()
     for product in products:
         if product.units_stored < product.units_min:
-            flash(f'Product "{product.name}" has less than minimum quantity.', 'warn')
-    return render_template('product/products.html', page_title='Products',
+            flash(_('Product "') + product.name + _('" has less than minimum quantity.'), 'warn')
+    return render_template('product/products.html', page_title=_('Products'),
                            products=products)
 
 
@@ -37,7 +37,7 @@ def add_page():
         name = request.form['name']
 
         if Product.query.filter_by(name=name).first():
-            flash(f'Product "{name}" already exists.', 'error')
+            flash(_('Product "') + name + _('" already exists.'), 'error')
             return redirect(url_for('.add_page'))
 
         product = Product.add_to_db(name=name,
@@ -45,10 +45,10 @@ def add_page():
                                     units_stored=int(request.form['units_stored']),
                                     units_min=int(request.form['units_min']),
                                     units_sold=0)
-        flash(f'Product #{product.id} added successfully.', 'info')
+        flash(_('Product #') + product.id + _(' added successfully.'), 'info')
         return redirect(url_for('.start_page'))
 
-    return render_template('product/add.html', page_title='Add new product')
+    return render_template('product/add.html', page_title=_('Add new product'))
 
 
 @product_bp.route('/update/<int:id>', methods=['GET', 'POST'])
@@ -60,7 +60,7 @@ def update_page(id):
         name = request.form['name']
 
         if name != product.name and Product.query.filter_by(name=name).first():
-            flash(f'Product "{name}" already exists.', 'error')
+            flash(_('Product "') + name + _('" already exists.'), 'error')
             return redirect(url_for('.start_page'))
 
         product.unit_price = int(float(request.form['unit_price']) * 100)
@@ -74,10 +74,10 @@ def update_page(id):
         product.units_stored = units_stored
         db.session.add(product_t)
         db.session.commit()
-        flash('Product updated successfully.', 'info')
+        flash(_('Product updated successfully.'), 'info')
         return redirect(url_for('.start_page'))
 
-    return render_template('product/update.html', page_title=f'Update product "{product.name}"',
+    return render_template('product/update.html', page_title=_('Update product ') + '"' + product.name + '"',
                            product=product)
 
 
@@ -85,7 +85,7 @@ def update_page(id):
 @requires_access_level(AccessLevel.MANAGER)
 def transactions_page():
     product_ts = ProductTransaction.query.order_by(desc(ProductTransaction.id)).all()
-    return render_template('product/transactions.html', page_title='Stock changes',
+    return render_template('product/transactions.html', page_title=_('Stock changes'),
                            product_ts=product_ts)
 
 
@@ -96,7 +96,7 @@ def delete_product(id):
     ProductTransaction.query.filter_by(product_id=id).delete(synchronize_session=False)
     db.session.delete(product)
     db.session.commit()
-    flash('Product deleted successfully.', 'info')
+    flash(_('Product deleted successfully.'), 'info')
     return redirect(url_for('.start_page'))
 
 

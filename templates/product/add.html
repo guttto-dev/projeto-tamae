@@ -1,23 +1,23 @@
 {% extends "_base.html" %}
 {% block main %}
 <form action="{{ url_for('.add_page') }}" method="post">
-	<label for="name">Name:
+	<label for="name">{{ _('Name') }}:
 		<input type="text" name="name" required>
 	</label>
 	<br>
-	<label for="unit_price">Price:
+	<label for="unit_price">{{ _('Price') }}:
 		<input name="unit_price" type="number" min="0.10" max="10000.00" step="0.01" required />
 	</label>
 	<br>
-	<label for="units_stored">Units stored:
+	<label for="units_stored">{{ _('Units stored') }}:
 		<input name="units_stored" type="number" min="1" max="10000" step="1" required />
 	</label>
 	<br>
-	<label for="units_min">Units minimum:
+	<label for="units_min">{{ _('Units minimum') }}:
 		<input name="units_min" type="number" min="0" max="10000" step="1" required />
 	</label>
 	<br>
-	<button type="submit">Add</button>
+	<button type="submit">{{ _('Add') }}</button>
 </form>
-<p><a href="{{ url_for('.start_page') }}">Go back</a></p>
+<p><a href="{{ url_for('.start_page') }}">{{ _('Go back') }}</a></p>
 {% endblock %}

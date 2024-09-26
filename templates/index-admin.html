@@ -1,17 +1,17 @@
 {% extends "_base.html" %}
 {% block main %}
-<h3>Welcome, {{ current_user.username }}!</h3>
+<h3>{{ _('Welcome, ') }}{{ current_user.username }}!</h3>
 <nav>
-	<a href="{{ url_for('.register_page') }}">Register new user</a>
-	<a href="{{ url_for('occurrence.start_page') }}">Occurrences</a>
-	<a href="{{ url_for('.logout_page') }}">Logout</a>
+	<a href="{{ url_for('.register_page') }}">{{ _('Register new user') }}</a>
+	<a href="{{ url_for('occurrence.start_page') }}">{{ _('Occurrences') }}</a>
+	<a href="{{ url_for('.logout_page') }}">{{ _('Logout') }}</a>
 </nav>
 <table id="users">
 	<thead>
 		<tr>
-			<th>Username</th>
-			<th>Access level</th>
-			<th>Actions</th>
+			<th>{{ _('Username') }}</th>
+			<th>{{ _('Access level') }}</th>
+			<th>{{ _('Actions') }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -22,7 +22,7 @@
 			<td>
 				{% if current_user != user %}
 				<a href="{{ url_for('.login_as', id=user.id) }}">Login</a>
-				<a href="#" onclick="deleteUser('{{ user.username }}', '{{ url_for('.delete_user', id=user.id) }}')">Delete</a>
+				<a href="#" onclick="deleteUser('{{ user.username }}', '{{ url_for('.delete_user', id=user.id) }}')">{{ _('Delete') }}</a>
 				{% endif %}
 			</td>
 		</tr>
@@ -32,7 +32,7 @@
 {% endblock %}
 {% block script %}
 function deleteUser(name, href) {
-	if (confirm(`Are you sure you want to delete the user "${name}"?`)) {
+	if (confirm(`{{ _('Are you sure you want to delete the user ') }}"${name}"?`)) {
 		window.location.href = href;
 	}
 }

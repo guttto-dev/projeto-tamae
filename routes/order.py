@@ -7,6 +7,7 @@ from flask import (
         flash,
         session,
         )
+from flask_babel import _
 
 from sqlalchemy import desc
 
@@ -37,7 +38,7 @@ def start_page():
             db.session.delete(order)
             db.session.commit()
 
-    return render_template('order/orders.html', page_title='Orders',
+    return render_template('order/orders.html', page_title=_('Orders'),
                            orders=orders)
 
 
@@ -65,7 +66,7 @@ def add_page():
         db.session.commit()
         return redirect(url_for('order.add_page'))
 
-    return render_template('order/add.html', page_title=f'New order #{session["order_id"]}',
+    return render_template('order/add.html', page_title=_('New order #') + session["order_id"],
                            order=order, products=products, product_ts=product_ts)
 
 
@@ -79,7 +80,7 @@ def finish_page():
         make_pay = 'make-payment' in request.form
 
         if not client_id and not make_pay:
-            flash('Client must be identified.', 'error')
+            flash(_('Client must be identified.'), 'error')
             return redirect(url_for('order.finish_page'))
 
         order = ProductOrder.query.get_or_404(session['order_id'])
@@ -96,7 +97,7 @@ def finish_page():
         session.pop('order_id')
         return redirect(url_for('.start_page'))
 
-    return render_template('order/finish.html', page_title=f'New order #{session["order_id"]}',
+    return render_template('order/finish.html', page_title=_('New order #') + session["order_id"],
                            clients=clients)
 
 

@@ -1,16 +1,16 @@
 {% extends "_base.html" %}
 {% block main %}
 <nav>
-	<a href="{{ url_for('index.start_page') }}">Go to start page</a>
+	<a href="{{ url_for('index.start_page') }}">{{ _('Go to start page') }}</a>
 </nav>
 <table id="occurrence">
 	<thead>
 		<tr>
-			<th>ID</th>
-			<th>Type</th>
-			<th>User</th>
-			<th>Resolved?</th>
-			<th>Actions</th>
+			<th>{{ _('ID') }}</th>
+			<th>{{ _('Type') }}</th>
+			<th>{{ _('User') }}</th>
+			<th>{{ _('Resolved?') }}</th>
+			<th>{{ _('Actions') }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -21,10 +21,10 @@
 			<td>{{ occ.user.username if occ.user else 'N/A' }}</td>
 			<td>{{ occ.is_solved }}</td>
 			<td>
-				<a href="{{ url_for('.read_page', id=occ.id) }}">View</a>
-				<a href="{{ url_for('.resolve_page', id=occ.id) }}">Mark as resolved</a>
+				<a href="{{ url_for('.read_page', id=occ.id) }}">{{ _('View') }}</a>
+				<a href="{{ url_for('.resolve_page', id=occ.id) }}">{{ _('Mark as resolved') }}</a>
 				{% if g.current_user.access_level == AccessLevel.ADMIN %}
-				<a href="{{ url_for('.delete', id=occ.id) }}">Delete</a>
+				<a href="{{ url_for('.delete', id=occ.id) }}">{{ _('Delete') }}</a>
 				{% endif %}
 			</td>
 		</tr>

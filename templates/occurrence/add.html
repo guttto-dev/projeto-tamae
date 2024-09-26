@@ -1,11 +1,11 @@
 {% extends "_base.html" %}
 {% block main %}
 <form action="{{ url_for('.add_page') }}" method="post">
-	<label for="type">Type:
+	<label for="type">{{ _('Type') }}:
 		<select name="type" required>
-			<option value="">Please select</option>
-			<option value="int">Internal</option>
-			<option value="erp">ERP</option>
+			<option value="">{{ _('Please select') }}</option>
+			<option value="int">{{ _('Internal') }}</option>
+			<option value="erp">{{ _('ERP') }}</option>
 		</select>
 	</label>
 	<br>
@@ -13,11 +13,11 @@
 		<textarea name="text" rows="5" cols="50" required></textarea>
 	</label>
 	<br>
-	<label for="identify_user">Register this occurrence under your user "{{ g.current_user.username }}"?
+	<label for="identify_user">{{ _('Register this occurrence under your user ') }}"{{ g.current_user.username }}"?
 		<input type="checkbox" name="identify_user" checked>
 	</label>
 	<br>
-	<button type="submit">Add</button>
+	<button type="submit">{{ _('Add') }}</button>
 </form>
-<p><a href="#" onclick="window.history.back()">Go back</a></p>
+<p><a href="#" onclick="window.history.back()">{{ _('Go back') }}</a></p>
 {% endblock %}

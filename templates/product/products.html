@@ -1,20 +1,20 @@
 {% extends "_base.html" %}
 {% block main %}
 <nav>
-	<a href="{{ url_for('.add_page') }}">Add new product</a>
-	<a href="{{ url_for('.transactions_page') }}">Stock changes</a>
-	<a href="{{ url_for('.download_arff_data') }}">Download order data</a>
-	<a href="{{ url_for('index.start_page') }}">Go to start page</a>
+	<a href="{{ url_for('.add_page') }}">{{ _('Add new product') }}</a>
+	<a href="{{ url_for('.transactions_page') }}">{{ _('Stock changes') }}</a>
+	<a href="{{ url_for('.download_arff_data') }}">{{ _('Download order data') }}</a>
+	<a href="{{ url_for('index.start_page') }}">{{ _('Go to start page') }}</a>
 </nav>
 <table id="products">
 	<thead>
 		<tr>
-			<th>Name</th>
-			<th>Price</th>
-			<th>Units stored</th>
-			<th>Units minimum</th>
-			<th>Units sold</th>
-			<th>Actions</th>
+			<th>{{ _('Name') }}</th>
+			<th>{{ _('Price') }}</th>
+			<th>{{ _('Units stored') }}</th>
+			<th>{{ _('Units minimum') }}</th>
+			<th>{{ _('Units sold') }}</th>
+			<th>{{ _('Actions') }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -26,7 +26,7 @@
 			<td>{{ product.units_min }}</td>
 			<td>{{ product.units_sold_i }}</td>
 			<td>
-				<a href="{{ url_for('.update_page', id=product.id) }}">Update</a>
+				<a href="{{ url_for('.update_page', id=product.id) }}">{{ _('Update') }}</a>
 			</td>
 		</tr>
 		{% endfor %}

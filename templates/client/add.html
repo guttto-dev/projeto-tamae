@@ -1,15 +1,15 @@
 {% extends "_base.html" %}
 {% block main %}
 <form action="{{ url_for('.add_page') }}" method="post">
-	<label for="name">Name:
+	<label for="name">{{ _('Name') }}:
 		<input type="text" name="name" required>
 	</label>
 	<br>
-	<label for="phone_number">Phone number:
+	<label for="phone_number">{{ _('Phone number') }}:
 		<input type="tel" name="phone_number" pattern="^\+?[0-9]{10,15}$" required>
 	</label>
-	Example: 87912345678<br>
-	<button type="submit">Add</button>
+	{{ _('Example') }}: 87912345678<br>
+	<button type="submit">{{ _('Add') }}</button>
 </form>
-<p><a href="#" onclick="window.history.back()">Go back</a></p>
+<p><a href="#" onclick="window.history.back()">{{ _('Go back') }}</a></p>
 {% endblock %}

@@ -1,17 +1,17 @@
 {% extends "_base.html" %}
 {% block main %}
 <nav>
-	<a href="{{ url_for('.add_page') }}">New order</a>
-	<a href="{{ url_for('index.start_page') }}">Go to start page</a>
+	<a href="{{ url_for('.add_page') }}">{{ _('New order') }}</a>
+	<a href="{{ url_for('index.start_page') }}">{{ _('Go to start page') }}</a>
 </nav>
 <table id="orders">
 	<thead>
 		<tr>
-			<th>Checkout date</th>
-			<th>ID</th>
-			<th>Client</th>
-			<th>Cost</th>
-			<th>Payment pending</th>
+			<th>{{ _('Checkout date') }}</th>
+			<th>{{ _('ID') }}</th>
+			<th>{{ _('Client') }}</th>
+			<th>{{ _('Cost') }}</th>
+			<th>{{ _('Payment pending') }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -19,17 +19,17 @@
 		<tr>
 			<td>{{ order.checkout_datetime }}</td>
 			<td>{{ order.id }}</td>
-			<td>{{ order.client.id if order.client else '<Anonym>' }}</td>
+			<td>{{ order.client.id if order.client else _('<Anonym>') }}</td>
 			<td>{{ order.value / 100 }}</td>
 			<td>
 				{% if not order.is_paid %}
-				<a href="{{ url_for('.make_payment', id=order.id) }}">Make payment</a>
+				<a href="{{ url_for('.make_payment', id=order.id) }}">{{ _('Make payment') }}</a>
 				{% endif %}
 			</td>
 		</tr>
 		{% endfor %}
 		<tr>
-			<td colspan="3" style="text-align: right;">Total</th>
+			<td colspan="3" style="text-align: right;">{{ _('Total') }}</th>
 			<td>
 				{% if orders %}
 				{{ (orders|sum(attribute='value')) / 100 }}

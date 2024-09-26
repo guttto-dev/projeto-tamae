@@ -22,6 +22,11 @@ class AccessLevel(Enum):
         return str(self.value).upper()
 
 
+class LanguageConfig(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    lang = db.Column(db.String(2), unique=True, nullable=False)
+
+
 class User(UserMixin, db.Model):
     __tablename__ = 'User'
 

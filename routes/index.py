@@ -8,6 +8,7 @@ from flask import (
         flash,
         session,
         )
+from flask_babel import _
 from flask_login import (
         login_user,
         logout_user,
@@ -25,18 +26,18 @@ def start_page():
     if g.first_user:
         return redirect(url_for('.register_page'))
     elif not g.current_user.is_authenticated:
-        flash('User is not autenticated, please login.', 'info')
+        flash(_('User is not autenticated, please login.'), 'info')
         return redirect(url_for('.login_page'))
     elif g.current_user.access_level == AccessLevel.ADMIN:
         users = User.query.all()
-        return render_template('index-admin.html', page_title='Admin page', users=users)
-    return render_template('index.html', page_title='Start page', AccessLevel=AccessLevel)
+        return render_template('index-admin.html', page_title=_('Admin page'), users=users)
+    return render_template('index.html', page_title=_('Start page'), AccessLevel=AccessLevel)
 
 
 @index_bp.route('/register', methods=['GET', 'POST'])
 def register_page():
     if not g.first_user and (not hasattr(g.current_user, 'access_level') or g.current_user.access_level != AccessLevel.ADMIN):
-        flash('You do not have permission to access this page.', 'error')
+        flash(_('You do not have permission to access this page.'), 'error')
         return redirect(url_for('.error_page'))
 
     if request.method == 'POST':
@@ -45,7 +46,7 @@ def register_page():
         access_level = request.form['access_level']
 
         if User.query.filter_by(username=username).first():
-            flash('Username already exists.', 'error')
+            flash(_('Username already exists.'), 'error')
             return redirect(url_for('.register_page'))
 
         access_level = AccessLevel(access_level)
@@ -57,12 +58,12 @@ def register_page():
         if g.first_user:
             g.first_user = False
             login_user(new_user)
-        flash(f'User {username} has been successfully registered!', 'info')
+        flash(_('User ') + username + _(' has been successfully registered!'), 'info')
         return redirect(url_for('.start_page'))
     elif g.first_user:
-        flash('No users found, create a user admin.', 'warn')
+        flash(_('No users found, create a user admin.'), 'warn')
 
-    return render_template('register.html', page_title='User registration')
+    return render_template('register.html', page_title=_('User registration'))
 
 
 @index_bp.route('/login', methods=['GET', 'POST'])
@@ -77,18 +78,18 @@ def login_page():
 
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
-            flash('Login successful!', 'info')
+            flash(_('Login successful!'), 'info')
             return redirect(url_for('.start_page'))
         else:
-            flash('Invalid username or password.', 'error')
+            flash(_('Invalid username or password.'), 'error')
             return redirect(url_for('.login_page'))
-    return render_template('login.html', page_title='User login')
+    return render_template('login.html', page_title=_('User login'))
 
 
 @index_bp.route('/logout')
 @login_required
 def logout_page():
-    flash(f'User {g.current_user.username} has been logged out.', 'info')
+    flash(_('User ') + g.current_user.username + _(' has been logged out.'), 'info')
     logout_user()
     return redirect(url_for('.login_page'))
 
@@ -96,7 +97,7 @@ def logout_page():
 @index_bp.route('/error')
 def error_page():
     error_message = session.pop('error_message', '')
-    return render_template('error.html', page_title='Error',
+    return render_template('error.html', page_title=_('Error'),
                            error_message=error_message)
 
 
@@ -106,7 +107,7 @@ def delete_user(id):
     user = User.query.get_or_404(id)
     db.session.delete(user)
     db.session.commit()
-    flash('User deleted successfully.', 'info')
+    flash(_('User deleted successfully.'), 'info')
     return redirect(url_for('.start_page'))
 
 

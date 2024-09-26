@@ -1,20 +1,20 @@
 {% extends "_base.html" %}
 {% block main %}
 <form action="{{ url_for('.finish_page') }}" method="post">
-	<label for="client_id">Client <a href="{{ url_for('client.add_page', back=g.current_route) }}">(add new here)</a>:
+	<label for="client_id">{{ _('Client') }} <a href="{{ url_for('client.add_page', back=g.current_route) }}">{{ _('(add new here)') }}</a>:
 		<select name="client_id">
-			<option value="">None</option>
+			<option value="">{{ _('None') }}</option>
 			{% for client in clients %}
 			<option value="{{ client.id }}">{{ client.name }} - {{ client.phone_number }}</option>
 			{% endfor %}
 		</select>
 	</label>
 	<br>
-	<label for="make-payment">Make payment?
+	<label for="make-payment"{{ _('Make payment?') }}>
 		<input type="checkbox" name="make-payment" checked>
 	</label>
 	<br>
-	<button type="submit">Finish</button>
+	<button type="submit">{{ _('Finish') }}</button>
 </form>
-<p><a href="{{ url_for('.add_page') }}">Go back</a></p>
+<p><a href="{{ url_for('.add_page') }}">{{ _('Go back') }}</a></p>
 {% endblock %}
