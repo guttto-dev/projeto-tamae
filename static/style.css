@@ -31,3 +31,5 @@ nav>*, td>* {
 .flash-info { color: #444; }
 .flash-warn { color: #bf6128; }
 .flash-error { color: #ee0202; font-weight: bold; }
+
+#language { margin-left: 16px; font-size: 0.7rem; }

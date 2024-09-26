@@ -15,7 +15,8 @@ from flask_login import (
         login_required,
         )
 
-from models.user import User, AccessLevel
+from config import Config
+from models.user import User, AccessLevel, LanguageConfig
 from util import db, bcrypt, requires_access_level
 
 index_bp = Blueprint('index', __name__)
@@ -31,7 +32,7 @@ def start_page():
     elif g.current_user.access_level == AccessLevel.ADMIN:
         users = User.query.all()
         return render_template('index-admin.html', page_title=_('Admin page'), users=users)
-    return render_template('index.html', page_title=_('Start page'), AccessLevel=AccessLevel)
+    return render_template('index.html', page_title=_('Start page'))
 
 
 @index_bp.route('/register', methods=['GET', 'POST'])
@@ -118,3 +119,13 @@ def login_as(id):
     logout_user()
     login_user(user)
     return redirect(url_for('.start_page'))
+
+
+@index_bp.route('/change-lang/<lang>')
+@requires_access_level(AccessLevel.ADMIN)
+def change_lang(lang):
+    if lang in Config.LANGUAGES:
+        lang_config = LanguageConfig.query.first()
+        lang_config.lang = lang
+        db.session.commit()
+    return redirect(request.referrer or url_for('.start_page'))

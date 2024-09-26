@@ -226,4 +226,5 @@ for assoc in association_examples:
                                               is_valid=False)]
         db.session.add_all(product_ts)
         db.session.commit()
+        order.is_paid = True
         order.add_to_db(*product_ts)

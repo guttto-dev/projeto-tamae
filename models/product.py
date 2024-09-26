@@ -70,7 +70,7 @@ class ProductOrder(db.Model):
     class CannotFinishError(Exception):
         def __init__(self, order):
             self.order = order
-            self.message = _('Order #') + order.id + _(' cannot be finished.')
+            self.message = _('Order #') + str(order.id) + _(' cannot be finished.')
             super().__init__(self.message)
 
     def add_to_db(self, *product_transactions):

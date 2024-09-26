@@ -16,7 +16,7 @@
 		{% for transaction in product_ts %}
 		<tr>
 			<td>{{ transaction.product.name }}</td>
-			<td>{{ transaction.order_id if transaction.order_id else _('Inserted (N/A)') }}</td>
+			<td>{{ transaction.order_id if transaction.order_id else _('Inserted ') + '(N/A)' }}</td>
 			<td>{{ transaction.unit_price/100 }}</td>
 			<td>{{ transaction.units }}</td>
 		</tr>

@@ -23,8 +23,22 @@
 		</main>
 		<hr />
 		{% if g.current_user.is_authenticated and g.current_route != 'occurrence.add_page' %}
-		<small><a href="{{ url_for('occurrence.add_page', back=g.current_route) }}">⚠️ {{ _('Register occurrence') }}</a></small>
+		<small>
+			<a href="{{ url_for('occurrence.add_page', back=g.current_route) }}">⚠️ {{ _('Register occurrence') }}</a>
+			{% if g.current_user.access_level == AccessLevel.ADMIN %}
+			<select id="language" onchange="changeLang()">
+				{% for lang in languages %}
+				<option value="{{ lang }}" {% if lang == current_lang %}selected{% endif %}>{{ lang }}</option>
+				{% endfor %}
+			</select>
+			{% endif %}
+		</small>
 		{% endif %}
 	</body>
-	<script>{% block script %}{% endblock %}</script>
+	<script>{% block script %}{% endblock %}
+	function changeLang() {
+		const selLang = document.getElementById('language').value;
+		window.location.href = '{{ url_for('index.change_lang', lang='') }}' + selLang;
+	}
+	</script>
 </html>

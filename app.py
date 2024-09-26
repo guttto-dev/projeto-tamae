@@ -1,5 +1,3 @@
-# TODO: languages
-
 import os
 
 from flask import (
@@ -7,12 +5,14 @@ from flask import (
         g,
         render_template,
         request,
+        session,
+        flash
         )
 from flask_babel import Babel, _
 from flask_login import LoginManager, current_user
 
 from config import Config
-from models.user import User, LanguageConfig
+from models.user import User, AccessLevel, LanguageConfig
 from util import db, bcrypt
 
 app = Flask(__name__)
@@ -44,8 +44,12 @@ def before_request():
 
 
 @app.context_processor
-def inject_locale():
-    return dict(get_locale=get_locale)
+def inject_on_templates():
+    lang_config = LanguageConfig.query.first()
+    return dict(get_locale=get_locale,
+                current_lang=lang_config.lang,
+                languages=Config.LANGUAGES,
+                AccessLevel=AccessLevel)
 
 
 @app.errorhandler(401)
@@ -76,7 +80,6 @@ with app.app_context():
     if not os.path.exists(f'{app.instance_path}/{Config.DATABASE_PATH}'):
         db.create_all()
         if Config.DEBUG:
-            app.debug = True
             import db_init_example
     if not LanguageConfig.query.first():
         db.session.add(LanguageConfig(lang=Config.DEFAULT_LANGUAGE))

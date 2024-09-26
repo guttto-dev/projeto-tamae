@@ -66,7 +66,7 @@ def add_page():
         db.session.commit()
         return redirect(url_for('order.add_page'))
 
-    return render_template('order/add.html', page_title=_('New order #') + session["order_id"],
+    return render_template('order/add.html', page_title=_('New order #') + str(session["order_id"]),
                            order=order, products=products, product_ts=product_ts)
 
 
@@ -97,7 +97,7 @@ def finish_page():
         session.pop('order_id')
         return redirect(url_for('.start_page'))
 
-    return render_template('order/finish.html', page_title=_('New order #') + session["order_id"],
+    return render_template('order/finish.html', page_title=_('New order #') + str(session["order_id"]),
                            clients=clients)
 
 

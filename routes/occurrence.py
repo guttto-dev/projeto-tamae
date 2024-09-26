@@ -65,7 +65,7 @@ def resolve_page(id):
     occurrence = Occurrence.query.get_or_404(id)
     occurrence.is_solved = True
     db.session.commit()
-    flash(_('Occurrence ') + id + _(' is marked as resolved.'), 'info')
+    flash(_('Occurrence ') + str(id) + _(' is marked as resolved.'), 'info')
     return redirect(url_for('.start_page'))
 
 

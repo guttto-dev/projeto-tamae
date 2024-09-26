@@ -9,6 +9,7 @@ from flask import (
         flash,
         send_file,
         )
+from flask_babel import _
 
 from sqlalchemy import desc
 
@@ -45,7 +46,7 @@ def add_page():
                                     units_stored=int(request.form['units_stored']),
                                     units_min=int(request.form['units_min']),
                                     units_sold=0)
-        flash(_('Product #') + product.id + _(' added successfully.'), 'info')
+        flash(_('Product #') + str(product.id) + _(' added successfully.'), 'info')
         return redirect(url_for('.start_page'))
 
     return render_template('product/add.html', page_title=_('Add new product'))

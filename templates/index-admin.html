@@ -21,7 +21,7 @@
 			<td>{{ user.access_level }}</td>
 			<td>
 				{% if current_user != user %}
-				<a href="{{ url_for('.login_as', id=user.id) }}">Login</a>
+				<a href="{{ url_for('.login_as', id=user.id) }}">{{ _('Login') }}</a>
 				<a href="#" onclick="deleteUser('{{ user.username }}', '{{ url_for('.delete_user', id=user.id) }}')">{{ _('Delete') }}</a>
 				{% endif %}
 			</td>
