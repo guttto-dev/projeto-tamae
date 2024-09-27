@@ -10,5 +10,5 @@ class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key')
     SESSION_COOKIE_SAMESITE='Lax'
 
-    LANGUAGES = ['en', 'pt']
+    LANGUAGES = ['en', 'pt', 'es', 'ja']
     DEFAULT_LANGUAGE = 'en'

@@ -1,0 +1,461 @@
+msgid ""
+msgstr ""
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: app.py:53
+msgid "Error: Unauthorized"
+msgstr "Error: No Autorizado"
+
+#: app.py:58
+msgid "Error: Page Not Found"
+msgstr "Error: Página No Encontrada"
+
+#: app.py:64
+msgid "Error: Internal Server"
+msgstr "Error: Servidor Interno"
+
+#: util.py:19
+msgid "You do not have permission to access that page."
+msgstr "No tienes permiso para acceder a esa página."
+
+#: models/product.py:67 routes/product.py:28 routes/product.py:40
+#: routes/product.py:63
+msgid "Product \""
+msgstr "Producto \""
+
+#: models/product.py:67
+msgid "\" does not have enough units."
+msgstr "\" no tiene suficientes unidades."
+
+#: models/product.py:73
+msgid "Order #"
+msgstr "Pedido #"
+
+#: models/product.py:73
+msgid " cannot be finished."
+msgstr " no puede ser finalizado."
+
+#: routes/client.py:26 templates/index.html:10 templates/index.html:16
+msgid "Clients"
+msgstr "Clientes"
+
+#: routes/client.py:43 routes/client.py:71
+msgid "Another user already has this phone number."
+msgstr "Otro usuario ya tiene este número de teléfono."
+
+#: routes/client.py:51
+msgid "Client added successfully."
+msgstr "Cliente añadido con éxito."
+
+#: routes/client.py:57
+msgid "Add new client"
+msgstr "Agregar nuevo cliente"
+
+#: routes/client.py:77
+msgid "Client updated successfully."
+msgstr "Cliente actualizado con éxito."
+
+#: routes/client.py:80
+msgid "Update client \""
+msgstr "Actualizar cliente \""
+
+#: routes/client.py:92
+msgid "Client deleted successfully."
+msgstr "Cliente eliminado con éxito."
+
+#: routes/index.py:30
+msgid "User is not autenticated, please login."
+msgstr "Usuario no autenticado, por favor inicie sesión."
+
+#: routes/index.py:35
+msgid "Admin page"
+msgstr "Página de administrador"
+
+#: routes/index.py:39
+msgid "Start page"
+msgstr "Página de inicio"
+
+#: routes/index.py:45
+msgid "You do not have permission to access this page."
+msgstr "No tienes permiso para acceder a esta página."
+
+#: routes/index.py:54
+msgid "Username already exists."
+msgstr "El nombre de usuario ya existe."
+
+#: routes/index.py:66 routes/index.py:97
+msgid "User "
+msgstr "Usuario "
+
+#: routes/index.py:66
+msgid " has been successfully registered!"
+msgstr " ha sido registrado con éxito!"
+
+#: routes/index.py:69
+msgid "No users found, create a user admin."
+msgstr "No se encontraron usuarios, cree un administrador."
+
+#: routes/index.py:71
+msgid "User registration"
+msgstr "Registro de usuario"
+
+#: routes/index.py:86
+msgid "Login successful!"
+msgstr "Inicio de sesión exitoso!"
+
+#: routes/index.py:89
+msgid "Invalid username or password."
+msgstr "Nombre de usuario o contraseña no válidos."
+
+#: routes/index.py:91
+msgid "User login"
+msgstr "Inicio de sesión de usuario"
+
+#: routes/index.py:97
+msgid " has been logged out."
+msgstr " ha cerrado sesión."
+
+#: routes/index.py:105
+msgid "Error"
+msgstr "Error"
+
+#: routes/index.py:115
+msgid "User deleted successfully."
+msgstr "Usuario eliminado con éxito."
+
+#: routes/occurrence.py:27 templates/index-admin.html:6 templates/index.html:11
+msgid "Occurrences"
+msgstr "Ocurrencias"
+
+#: routes/occurrence.py:53
+msgid "Occurrence added successfully."
+msgstr "Ocurrencia añadida con éxito."
+
+#: routes/occurrence.py:58
+msgid "Add new occurrence"
+msgstr "Agregar nueva ocurrencia"
+
+#: routes/occurrence.py:68
+msgid "Occurrence "
+msgstr "Ocurrencia "
+
+#: routes/occurrence.py:68
+msgid " is marked as resolved."
+msgstr " está marcada como resuelta."
+
+#: routes/order.py:41 templates/index.html:15
+msgid "Orders"
+msgstr "Pedidos"
+
+#: routes/order.py:69 routes/order.py:100
+msgid "New order #"
+msgstr "Nuevo pedido #"
+
+#: routes/order.py:83
+msgid "Client must be identified."
+msgstr "El cliente debe ser identificado."
+
+#: routes/product.py:28
+msgid "\" has less than minimum quantity."
+msgstr "\" tiene menos de la cantidad mínima."
+
+#: routes/product.py:29 templates/index.html:9
+msgid "Products"
+msgstr "Productos"
+
+#: routes/product.py:40 routes/product.py:63
+msgid "\" already exists."
+msgstr "\" ya existe."
+
+#: routes/product.py:48
+msgid "Product #"
+msgstr "Producto #"
+
+#: routes/product.py:48
+msgid " added successfully."
+msgstr " añadido con éxito."
+
+#: routes/product.py:51 templates/product/products.html:4
+msgid "Add new product"
+msgstr "Agregar nuevo producto"
+
+#: routes/product.py:77
+msgid "Product updated successfully."
+msgstr "Producto actualizado con éxito."
+
+#: routes/product.py:80
+msgid "Update product "
+msgstr "Actualizar producto "
+
+#: routes/product.py:88 templates/product/products.html:5
+msgid "Stock changes"
+msgstr "Cambios en el inventario"
+
+#: routes/product.py:99
+msgid "Product deleted successfully."
+msgstr "Producto eliminado con éxito."
+
+#: templates/_base.html:27
+msgid "Register occurrence"
+msgstr "Registrar ocurrencia"
+
+#: templates/client/add.html:14 templates/error.html:5
+#: templates/occurrence/add.html:22 templates/order/finish.html:19
+#: templates/product/add.html:22 templates/product/transactions.html:4
+#: templates/product/update.html:23 templates/register.html:27
+msgid "Go back"
+msgstr "Volver"
+
+#: templates/error.html:8 templates/occurrence/occurrences.html:4
+#: templates/order/orders.html:5 templates/product/products.html:7
+msgid "Go to start page"
+msgstr "Ir a la página de inicio"
+
+#: templates/index-admin.html:3 templates/index.html:3
+msgid "Welcome, "
+msgstr "Bienvenido(a), "
+
+#: templates/index-admin.html:5
+msgid "Register new user"
+msgstr "Registrar nuevo usuario"
+
+#: templates/index-admin.html:7 templates/index.html:5
+msgid "Logout"
+msgstr "Cerrar sesión"
+
+#: templates/index-admin.html:12 templates/login.html:4
+#: templates/register.html:4
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#: templates/index-admin.html:13 templates/register.html:15
+msgid "Access level"
+msgstr "Nivel de acceso"
+
+#: templates/index-admin.html:14 templates/occurrence/occurrences.html:13
+#: templates/order/add.html:14 templates/product/products.html:17
+msgid "Actions"
+msgstr "Acciones"
+
+#: templates/index-admin.html:24 templates/login.html:12
+msgid "Login"
+msgstr "Iniciar sesión"
+
+#: templates/index-admin.html:25 templates/occurrence/occurrences.html:27
+msgid "Delete"
+msgstr "Eliminar"
+
+#: templates/index-admin.html:35
+msgid "Are you sure you want to delete the user "
+msgstr "¿Estás seguro de que deseas eliminar al usuario "
+
+#: templates/login.html:8 templates/register.html:8
+msgid "Password"
+msgstr "Contraseña"
+
+#: templates/register.html:17
+msgid "Admin"
+msgstr "Administrador"
+
+#: templates/register.html:18
+msgid "Manager"
+msgstr "Gerente"
+
+#: templates/register.html:19
+msgid "Operator"
+msgstr "Operador"
+
+#: templates/register.html:24
+msgid "Register"
+msgstr "Registrar"
+
+#: templates/client/add.html:4 templates/product/add.html:4
+#: templates/product/products.html:12 templates/product/update.html:4
+msgid "Name"
+msgstr "Nombre"
+
+#: templates/client/add.html:8
+msgid "Phone number"
+msgstr "Número de teléfono"
+
+#: templates/client/add.html:11
+msgid "Example"
+msgstr "Ejemplo"
+
+#: templates/client/add.html:12 templates/occurrence/add.html:20
+#: templates/order/add.html:45 templates/product/add.html:20
+msgid "Add"
+msgstr "Agregar"
+
+#: templates/occurrence/add.html:4 templates/occurrence/occurrences.html:10
+msgid "Type"
+msgstr "Tipo"
+
+#: templates/occurrence/add.html:6 templates/order/add.html:33
+msgid "Please select"
+msgstr "Por favor seleccione"
+
+#: templates/occurrence/add.html:7
+msgid "Internal"
+msgstr "Interna"
+
+#: templates/occurrence/add.html:8
+msgid "ERP"
+msgstr "ERP"
+
+#: templates/occurrence/add.html:16
+msgid "Register this occurrence under your user "
+msgstr "Registrar esta ocurrencia bajo tu usuario "
+
+#: templates/occurrence/occurrences.html:9 templates/order/orders.html:11
+msgid "ID"
+msgstr "ID"
+
+#: templates/occurrence/occurrences.html:11
+msgid "User"
+msgstr "Usuario"
+
+#: templates/occurrence/occurrences.html:12
+msgid "Resolved?"
+msgstr "¿Resuelta?"
+
+#: templates/occurrence/occurrences.html:24
+msgid "View"
+msgstr "Visualizar"
+
+#: templates/occurrence/occurrences.html:25
+msgid "Mark as resolved"
+msgstr "Marcar como resuelta"
+
+#: templates/order/add.html:4
+msgid "Empty"
+msgstr "Vaciar"
+
+#: templates/order/add.html:5
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: templates/order/add.html:10 templates/product/transactions.html:9
+msgid "Product"
+msgstr "Producto"
+
+#: templates/order/add.html:11
+msgid "Quantity"
+msgstr "Cantidad"
+
+#: templates/order/add.html:12
+msgid "Unit price"
+msgstr "Precio unitario"
+
+#: templates/order/add.html:13 templates/product/add.html:8
+#: templates/product/products.html:13 templates/product/update.html:8
+msgid "Price"
+msgstr "Precio"
+
+#: templates/order/add.html:25
+msgid "Remove"
+msgstr "Eliminar"
+
+#: templates/order/add.html:50 templates/order/orders.html:32
+msgid "Total"
+msgstr "Total"
+
+#: templates/order/add.html:60
+msgid "Checkout"
+msgstr "Finalizar compra"
+
+#: templates/order/finish.html:4 templates/order/orders.html:12
+msgid "Client"
+msgstr "Cliente"
+
+#: templates/order/finish.html:4
+msgid "(add new here)"
+msgstr "(agregar nuevo aquí)"
+
+#: templates/order/finish.html:6
+msgid "None"
+msgstr "Ninguno"
+
+#: templates/order/finish.html:13
+msgid "Make payment?"
+msgstr "¿Realizar pago?"
+
+#: templates/order/finish.html:17
+msgid "Finish"
+msgstr "Finalizar"
+
+#: templates/order/orders.html:4
+msgid "New order"
+msgstr "Nuevo pedido"
+
+#: templates/order/orders.html:10
+msgid "Checkout date"
+msgstr "Fecha de finalización"
+
+#: templates/order/orders.html:13
+msgid "Cost"
+msgstr "Costo"
+
+#: templates/order/orders.html:14
+msgid "Payment pending"
+msgstr "Pago pendiente"
+
+#: templates/order/orders.html:22
+msgid "<Anonym>"
+msgstr "<Anónimo>"
+
+#: templates/order/orders.html:26
+msgid "Make payment"
+msgstr "Realizar pago"
+
+#: templates/product/add.html:12 templates/product/products.html:14
+#: templates/product/update.html:12
+msgid "Units stored"
+msgstr "Unidades almacenadas"
+
+#: templates/product/add.html:16 templates/product/products.html:15
+#: templates/product/update.html:16
+msgid "Units minimum"
+msgstr "Unidades mínimas"
+
+#: templates/product/products.html:6
+msgid "Download order data"
+msgstr "Descargar datos del pedido"
+
+#: templates/product/products.html:16
+msgid "Units sold"
+msgstr "Unidades vendidas"
+
+#: templates/product/products.html:29 templates/product/update.html:20
+msgid "Update"
+msgstr "Actualizar"
+
+#: templates/product/transactions.html:10
+msgid "Order ID"
+msgstr "ID del pedido"
+
+#: templates/product/transactions.html:11
+msgid "Price at that time"
+msgstr "Precio en ese momento"
+
+#: templates/product/transactions.html:12
+msgid "Unit change"
+msgstr "Cambio de unidad"
+
+#: templates/product/transactions.html:19
+msgid "Inserted "
+msgstr "Insertado "
+
+#: templates/product/update.html:21
+msgid "DELETE"
+msgstr "ELIMINAR"
+
+#: templates/product/update.html:27
+msgid "Are you sure you want to delete "
+msgstr "¿Estás seguro de que deseas eliminar "
+
