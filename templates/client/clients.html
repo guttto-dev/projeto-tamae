@@ -1,15 +1,15 @@
 {% extends "_base.html" %}
 {% block main %}
 <nav>
-	<a href="{{ url_for('.add_page') }}">Add new client</a>
-	<a href="{{ url_for('index.start_page') }}">Go to start page</a>
+	<a href="{{ url_for('.add_page') }}">{{ _('Add new client') }}</a>
+	<a href="{{ url_for('index.start_page') }}">{{ _('Go to start page') }}</a>
 </nav>
 <table id="clients">
 	<thead>
 		<tr>
-			<th>Name</th>
-			<th>Phone number</th>
-			<th>Actions</th>
+			<th>{{ _('Name') }}</th>
+			<th>{{ _('Phone number') }}</th>
+			<th>{{ _('Actions') }}</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -19,7 +19,7 @@
 			<td>{{ client.name }}</td>
 			<td>{{ client.phone_number }}</td>
 			<td>
-				<a href="{{ url_for('.update_page', id=client.id) }}">Update</a>
+				<a href="{{ url_for('.update_page', id=client.id) }}">{{ _('Update') }}</a>
 			</td>
 		</tr>
 		{% endif %}

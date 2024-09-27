@@ -1,23 +1,23 @@
 {% extends "_base.html" %}
 {% block main %}
 <form action="{{ url_for('.update_page', id=client.id) }}" method="post">
-	<label for="name">Name:
+	<label for="name">{{ _('Name') }}:
 		<input type="text" name="name" value="{{ client.name }}" placeholder="{{ client.name }}" required>
 	</label>
 	<br>
-	<label for="phone_number">Phone number:
+	<label for="phone_number">{{ _('Phone number') }}:
 		<input type="tel" name="phone_number"  pattern="^\+?[0-9]{10,15}$"
 			   value="{{ client.phone_number }}" placeholder="{{ client.phone_number }}" required>
 	</label>
-	Example: 87912345678<br>
-	<button type="submit">Update</button>
-	<button type="button" onclick="deleteClient('{{ client.name }}', '{{ url_for('.delete_client', id=client.id) }}')">DELETE</button>
+	{{ _('Example') }}: 87912345678<br>
+	<button type="submit">{{ _('Update') }}</button>
+	<button type="button" onclick="deleteClient('{{ client.name }}', '{{ url_for('.delete_client', id=client.id) }}')">{{ _('DELETE') }}</button>
 </form>
-<p><a href="{{ url_for('.start_page') }}">Go back</a></p>
+<p><a href="{{ url_for('.start_page') }}">{{ _('Go back') }}</a></p>
 {% endblock %}
 {% block script %}
 function deleteClient(name, href) {
-	if (confirm(`Are you sure you want to delete "${name}"?`)) {
+	if (confirm(`{{ _('Are you sure you want to delete ') }}"${name}"?`)) {
 		window.location.href = href;
 	}
 }

@@ -334,7 +334,7 @@ msgstr "Marcar como resolvida"
 
 #: templates/order/add.html:4
 msgid "Empty"
-msgstr "Vazio"
+msgstr "Esvaziar"
 
 #: templates/order/add.html:5
 msgid "Cancel"
