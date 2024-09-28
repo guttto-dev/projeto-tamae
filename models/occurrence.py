@@ -1,5 +1,7 @@
 from enum import Enum
 
+from flask_babel import _
+
 from util import db
 
 
@@ -29,6 +31,12 @@ class Occurrence(db.Model):
     type = db.Column(db.Enum(OccType), nullable=False)
     text = db.Column(db.Text, nullable=False)
     is_solved = db.Column(db.Boolean, nullable=False)
+
+    @property
+    def is_solved_str(self):
+        if self.is_solved:
+            return _('Yes')
+        return _('No')
 
     def __repr__(self):
         return f'<Occurrence id={self.id} type={self.type} user_id={self.user_id}>'

@@ -19,7 +19,7 @@
 			<td>{{ occ.id }}</td>
 			<td>{{ occ.type }}</td>
 			<td>{{ occ.user.username if occ.user else 'N/A' }}</td>
-			<td>{{ occ.is_solved }}</td>
+			<td>{{ occ.is_solved_str }}</td>
 			<td>
 				<a href="{{ url_for('.read_page', id=occ.id) }}">{{ _('View') }}</a>
 				<a href="{{ url_for('.resolve_page', id=occ.id) }}">{{ _('Mark as resolved') }}</a>

@@ -1,21 +1,22 @@
 msgid ""
 msgstr ""
 "Language: ja\n"
+"Language-Team: ja <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.16.0\n"
 
-#: app.py:53
+#: app.py:57
 msgid "Error: Unauthorized"
 msgstr "エラー: 権限がありません"
 
-#: app.py:58
+#: app.py:62
 msgid "Error: Page Not Found"
 msgstr "エラー: ページが見つかりません"
 
-#: app.py:64
+#: app.py:68
 msgid "Error: Internal Server"
 msgstr "エラー: サーバー内部エラー"
 
@@ -23,8 +24,16 @@ msgstr "エラー: サーバー内部エラー"
 msgid "You do not have permission to access that page."
 msgstr "そのページにアクセスする権限がありません。"
 
-#: models/product.py:67 routes/product.py:28 routes/product.py:40
-#: routes/product.py:63
+#: models/occurrence.py:38
+msgid "Yes"
+msgstr "シム"
+
+#: models/occurrence.py:39
+msgid "No"
+msgstr "いいえ"
+
+#: models/product.py:67 routes/product.py:29 routes/product.py:41
+#: routes/product.py:64
 msgid "Product \""
 msgstr "商品 \""
 
@@ -52,7 +61,7 @@ msgstr "他のユーザーが既にこの電話番号を使用しています。
 msgid "Client added successfully."
 msgstr "クライアントが正常に追加されました。"
 
-#: routes/client.py:57
+#: routes/client.py:57 templates/client/clients.html:4
 msgid "Add new client"
 msgstr "新しいクライアントを追加"
 
@@ -72,59 +81,59 @@ msgstr "クライアントが正常に削除されました。"
 msgid "User is not autenticated, please login."
 msgstr "ユーザーが認証されていません。ログインしてください。"
 
-#: routes/index.py:35
+#: routes/index.py:34
 msgid "Admin page"
 msgstr "管理者ページ"
 
-#: routes/index.py:39
+#: routes/index.py:35
 msgid "Start page"
 msgstr "スタートページ"
 
-#: routes/index.py:45
+#: routes/index.py:41
 msgid "You do not have permission to access this page."
 msgstr "このページにアクセスする権限がありません。"
 
-#: routes/index.py:54
+#: routes/index.py:50
 msgid "Username already exists."
 msgstr "ユーザー名は既に存在します。"
 
-#: routes/index.py:66 routes/index.py:97
+#: routes/index.py:62 routes/index.py:93
 msgid "User "
 msgstr "ユーザー "
 
-#: routes/index.py:66
+#: routes/index.py:62
 msgid " has been successfully registered!"
 msgstr " は正常に登録されました！"
 
-#: routes/index.py:69
+#: routes/index.py:65
 msgid "No users found, create a user admin."
 msgstr "ユーザーが見つかりませんでした。管理者を作成してください。"
 
-#: routes/index.py:71
+#: routes/index.py:67
 msgid "User registration"
 msgstr "ユーザー登録"
 
-#: routes/index.py:86
+#: routes/index.py:82
 msgid "Login successful!"
 msgstr "ログインに成功しました！"
 
-#: routes/index.py:89
+#: routes/index.py:85
 msgid "Invalid username or password."
 msgstr "ユーザー名またはパスワードが無効です。"
 
-#: routes/index.py:91
+#: routes/index.py:87
 msgid "User login"
 msgstr "ユーザーログイン"
 
-#: routes/index.py:97
+#: routes/index.py:93
 msgid " has been logged out."
 msgstr " はログアウトしました。"
 
-#: routes/index.py:105
+#: routes/index.py:101
 msgid "Error"
 msgstr "エラー"
 
-#: routes/index.py:115
+#: routes/index.py:111
 msgid "User deleted successfully."
 msgstr "ユーザーが正常に削除されました。"
 
@@ -160,43 +169,43 @@ msgstr "新しい注文 #"
 msgid "Client must be identified."
 msgstr "クライアントを識別する必要があります。"
 
-#: routes/product.py:28
+#: routes/product.py:29
 msgid "\" has less than minimum quantity."
 msgstr "\" は最小数量未満です。"
 
-#: routes/product.py:29 templates/index.html:9
+#: routes/product.py:30 templates/index.html:9
 msgid "Products"
 msgstr "商品"
 
-#: routes/product.py:40 routes/product.py:63
+#: routes/product.py:41 routes/product.py:64
 msgid "\" already exists."
 msgstr "\" は既に存在します。"
 
-#: routes/product.py:48
+#: routes/product.py:49
 msgid "Product #"
 msgstr "商品番号 #"
 
-#: routes/product.py:48
+#: routes/product.py:49
 msgid " added successfully."
 msgstr " が正常に追加されました。"
 
-#: routes/product.py:51 templates/product/products.html:4
+#: routes/product.py:52 templates/product/products.html:4
 msgid "Add new product"
 msgstr "新しい商品を追加"
 
-#: routes/product.py:77
+#: routes/product.py:78
 msgid "Product updated successfully."
 msgstr "商品が正常に更新されました。"
 
-#: routes/product.py:80
+#: routes/product.py:81
 msgid "Update product "
 msgstr "商品を更新 "
 
-#: routes/product.py:88 templates/product/products.html:5
+#: routes/product.py:89 templates/product/products.html:5
 msgid "Stock changes"
 msgstr "在庫の変化"
 
-#: routes/product.py:99
+#: routes/product.py:100
 msgid "Product deleted successfully."
 msgstr "商品が正常に削除されました。"
 
@@ -204,15 +213,17 @@ msgstr "商品が正常に削除されました。"
 msgid "Register occurrence"
 msgstr "発生を登録"
 
-#: templates/client/add.html:14 templates/error.html:5
-#: templates/occurrence/add.html:22 templates/order/finish.html:19
-#: templates/product/add.html:22 templates/product/transactions.html:4
-#: templates/product/update.html:23 templates/register.html:27
+#: templates/client/add.html:14 templates/client/update.html:16
+#: templates/error.html:5 templates/occurrence/add.html:22
+#: templates/order/finish.html:19 templates/product/add.html:22
+#: templates/product/transactions.html:4 templates/product/update.html:23
+#: templates/register.html:27
 msgid "Go back"
 msgstr "戻る"
 
-#: templates/error.html:8 templates/occurrence/occurrences.html:4
-#: templates/order/orders.html:5 templates/product/products.html:7
+#: templates/client/clients.html:5 templates/error.html:8
+#: templates/occurrence/occurrences.html:4 templates/order/orders.html:5
+#: templates/product/products.html:7
 msgid "Go to start page"
 msgstr "スタートページに戻る"
 
@@ -237,8 +248,9 @@ msgstr "ユーザー名"
 msgid "Access level"
 msgstr "アクセスレベル"
 
-#: templates/index-admin.html:14 templates/occurrence/occurrences.html:13
-#: templates/order/add.html:14 templates/product/products.html:17
+#: templates/client/clients.html:12 templates/index-admin.html:14
+#: templates/occurrence/occurrences.html:13 templates/order/add.html:14
+#: templates/product/products.html:17
 msgid "Actions"
 msgstr "アクション"
 
@@ -274,16 +286,18 @@ msgstr "オペレーター"
 msgid "Register"
 msgstr "登録"
 
-#: templates/client/add.html:4 templates/product/add.html:4
+#: templates/client/add.html:4 templates/client/clients.html:10
+#: templates/client/update.html:4 templates/product/add.html:4
 #: templates/product/products.html:12 templates/product/update.html:4
 msgid "Name"
 msgstr "名前"
 
-#: templates/client/add.html:8
+#: templates/client/add.html:8 templates/client/clients.html:11
+#: templates/client/update.html:8
 msgid "Phone number"
 msgstr "電話番号"
 
-#: templates/client/add.html:11
+#: templates/client/add.html:11 templates/client/update.html:12
 msgid "Example"
 msgstr "例"
 
@@ -292,33 +306,44 @@ msgstr "例"
 msgid "Add"
 msgstr "追加"
 
+#: templates/client/clients.html:22 templates/client/update.html:13
+#: templates/product/products.html:29 templates/product/update.html:20
+msgid "Update"
+msgstr "更新"
+
+#: templates/client/update.html:14 templates/product/update.html:21
+msgid "DELETE"
+msgstr "削除"
+
+#: templates/client/update.html:20 templates/product/update.html:27
+msgid "Are you sure you want to delete "
+msgstr "削除してもよろしいですか "
+
 #: templates/occurrence/add.html:4 templates/occurrence/occurrences.html:10
 msgid "Type"
 msgstr "タイプ"
 
-#: templates/occurrence/add.html:9
-msgid "Critical"
-msgstr "クリティカル"
+#: templates/occurrence/add.html:6 templates/order/add.html:33
+msgid "Please select"
+msgstr "選択してください"
 
-#: templates/occurrence/add.html:10
-msgid "Warning"
-msgstr "警告"
-
-#: templates/occurrence/add.html:11
-msgid "Normal"
-msgstr "ノーマル"
-
-#: templates/occurrence/add.html:15
-msgid "Title"
-msgstr "タイトル"
+#: templates/occurrence/add.html:7
+msgid "Internal"
+msgstr "内部"
 
 #: templates/occurrence/add.html:16
-msgid "Description"
-msgstr "説明"
+#, fuzzy
+msgid "Register this occurrence under your user "
+msgstr "発生を登録"
 
-#: templates/occurrence/add.html:17
-msgid "Responsible"
-msgstr "責任者"
+#: templates/occurrence/occurrences.html:9 templates/order/orders.html:11
+msgid "ID"
+msgstr ""
+
+#: templates/occurrence/occurrences.html:11
+#, fuzzy
+msgid "User"
+msgstr "ユーザー "
 
 #: templates/occurrence/occurrences.html:12
 msgid "Resolved?"
@@ -431,10 +456,6 @@ msgstr "注文データをダウンロード"
 msgid "Units sold"
 msgstr "販売単位"
 
-#: templates/product/products.html:29 templates/product/update.html:20
-msgid "Update"
-msgstr "更新"
-
 #: templates/product/transactions.html:10
 msgid "Order ID"
 msgstr "注文ID"
@@ -451,11 +472,21 @@ msgstr "単位変更"
 msgid "Inserted "
 msgstr "挿入 "
 
-#: templates/product/update.html:21
-msgid "DELETE"
-msgstr "削除"
+#~ msgid "Critical"
+#~ msgstr "クリティカル"
 
-#: templates/product/update.html:27
-msgid "Are you sure you want to delete "
-msgstr "削除してもよろしいですか "
+#~ msgid "Warning"
+#~ msgstr "警告"
+
+#~ msgid "Normal"
+#~ msgstr "ノーマル"
+
+#~ msgid "Title"
+#~ msgstr "タイトル"
+
+#~ msgid "Description"
+#~ msgstr "説明"
+
+#~ msgid "Responsible"
+#~ msgstr "責任者"
 

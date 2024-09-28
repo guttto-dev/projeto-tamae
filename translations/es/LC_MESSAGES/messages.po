@@ -5,17 +5,17 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.16.0\n"
 
-#: app.py:53
+#: app.py:57
 msgid "Error: Unauthorized"
 msgstr "Error: No Autorizado"
 
-#: app.py:58
+#: app.py:62
 msgid "Error: Page Not Found"
 msgstr "Error: Página No Encontrada"
 
-#: app.py:64
+#: app.py:68
 msgid "Error: Internal Server"
 msgstr "Error: Servidor Interno"
 
@@ -23,8 +23,16 @@ msgstr "Error: Servidor Interno"
 msgid "You do not have permission to access that page."
 msgstr "No tienes permiso para acceder a esa página."
 
-#: models/product.py:67 routes/product.py:28 routes/product.py:40
-#: routes/product.py:63
+#: models/occurrence.py:38
+msgid "Yes"
+msgstr "Sim"
+
+#: models/occurrence.py:39
+msgid "No"
+msgstr "No"
+
+#: models/product.py:67 routes/product.py:29 routes/product.py:41
+#: routes/product.py:64
 msgid "Product \""
 msgstr "Producto \""
 
@@ -52,7 +60,7 @@ msgstr "Otro usuario ya tiene este número de teléfono."
 msgid "Client added successfully."
 msgstr "Cliente añadido con éxito."
 
-#: routes/client.py:57
+#: routes/client.py:57 templates/client/clients.html:4
 msgid "Add new client"
 msgstr "Agregar nuevo cliente"
 
@@ -72,59 +80,59 @@ msgstr "Cliente eliminado con éxito."
 msgid "User is not autenticated, please login."
 msgstr "Usuario no autenticado, por favor inicie sesión."
 
-#: routes/index.py:35
+#: routes/index.py:34
 msgid "Admin page"
 msgstr "Página de administrador"
 
-#: routes/index.py:39
+#: routes/index.py:35
 msgid "Start page"
 msgstr "Página de inicio"
 
-#: routes/index.py:45
+#: routes/index.py:41
 msgid "You do not have permission to access this page."
 msgstr "No tienes permiso para acceder a esta página."
 
-#: routes/index.py:54
+#: routes/index.py:50
 msgid "Username already exists."
 msgstr "El nombre de usuario ya existe."
 
-#: routes/index.py:66 routes/index.py:97
+#: routes/index.py:62 routes/index.py:93
 msgid "User "
 msgstr "Usuario "
 
-#: routes/index.py:66
+#: routes/index.py:62
 msgid " has been successfully registered!"
 msgstr " ha sido registrado con éxito!"
 
-#: routes/index.py:69
+#: routes/index.py:65
 msgid "No users found, create a user admin."
 msgstr "No se encontraron usuarios, cree un administrador."
 
-#: routes/index.py:71
+#: routes/index.py:67
 msgid "User registration"
 msgstr "Registro de usuario"
 
-#: routes/index.py:86
+#: routes/index.py:82
 msgid "Login successful!"
 msgstr "Inicio de sesión exitoso!"
 
-#: routes/index.py:89
+#: routes/index.py:85
 msgid "Invalid username or password."
 msgstr "Nombre de usuario o contraseña no válidos."
 
-#: routes/index.py:91
+#: routes/index.py:87
 msgid "User login"
 msgstr "Inicio de sesión de usuario"
 
-#: routes/index.py:97
+#: routes/index.py:93
 msgid " has been logged out."
 msgstr " ha cerrado sesión."
 
-#: routes/index.py:105
+#: routes/index.py:101
 msgid "Error"
 msgstr "Error"
 
-#: routes/index.py:115
+#: routes/index.py:111
 msgid "User deleted successfully."
 msgstr "Usuario eliminado con éxito."
 
@@ -160,43 +168,43 @@ msgstr "Nuevo pedido #"
 msgid "Client must be identified."
 msgstr "El cliente debe ser identificado."
 
-#: routes/product.py:28
+#: routes/product.py:29
 msgid "\" has less than minimum quantity."
 msgstr "\" tiene menos de la cantidad mínima."
 
-#: routes/product.py:29 templates/index.html:9
+#: routes/product.py:30 templates/index.html:9
 msgid "Products"
 msgstr "Productos"
 
-#: routes/product.py:40 routes/product.py:63
+#: routes/product.py:41 routes/product.py:64
 msgid "\" already exists."
 msgstr "\" ya existe."
 
-#: routes/product.py:48
+#: routes/product.py:49
 msgid "Product #"
 msgstr "Producto #"
 
-#: routes/product.py:48
+#: routes/product.py:49
 msgid " added successfully."
 msgstr " añadido con éxito."
 
-#: routes/product.py:51 templates/product/products.html:4
+#: routes/product.py:52 templates/product/products.html:4
 msgid "Add new product"
 msgstr "Agregar nuevo producto"
 
-#: routes/product.py:77
+#: routes/product.py:78
 msgid "Product updated successfully."
 msgstr "Producto actualizado con éxito."
 
-#: routes/product.py:80
+#: routes/product.py:81
 msgid "Update product "
 msgstr "Actualizar producto "
 
-#: routes/product.py:88 templates/product/products.html:5
+#: routes/product.py:89 templates/product/products.html:5
 msgid "Stock changes"
 msgstr "Cambios en el inventario"
 
-#: routes/product.py:99
+#: routes/product.py:100
 msgid "Product deleted successfully."
 msgstr "Producto eliminado con éxito."
 
@@ -204,15 +212,17 @@ msgstr "Producto eliminado con éxito."
 msgid "Register occurrence"
 msgstr "Registrar ocurrencia"
 
-#: templates/client/add.html:14 templates/error.html:5
-#: templates/occurrence/add.html:22 templates/order/finish.html:19
-#: templates/product/add.html:22 templates/product/transactions.html:4
-#: templates/product/update.html:23 templates/register.html:27
+#: templates/client/add.html:14 templates/client/update.html:16
+#: templates/error.html:5 templates/occurrence/add.html:22
+#: templates/order/finish.html:19 templates/product/add.html:22
+#: templates/product/transactions.html:4 templates/product/update.html:23
+#: templates/register.html:27
 msgid "Go back"
 msgstr "Volver"
 
-#: templates/error.html:8 templates/occurrence/occurrences.html:4
-#: templates/order/orders.html:5 templates/product/products.html:7
+#: templates/client/clients.html:5 templates/error.html:8
+#: templates/occurrence/occurrences.html:4 templates/order/orders.html:5
+#: templates/product/products.html:7
 msgid "Go to start page"
 msgstr "Ir a la página de inicio"
 
@@ -237,8 +247,9 @@ msgstr "Nombre de usuario"
 msgid "Access level"
 msgstr "Nivel de acceso"
 
-#: templates/index-admin.html:14 templates/occurrence/occurrences.html:13
-#: templates/order/add.html:14 templates/product/products.html:17
+#: templates/client/clients.html:12 templates/index-admin.html:14
+#: templates/occurrence/occurrences.html:13 templates/order/add.html:14
+#: templates/product/products.html:17
 msgid "Actions"
 msgstr "Acciones"
 
@@ -274,16 +285,18 @@ msgstr "Operador"
 msgid "Register"
 msgstr "Registrar"
 
-#: templates/client/add.html:4 templates/product/add.html:4
+#: templates/client/add.html:4 templates/client/clients.html:10
+#: templates/client/update.html:4 templates/product/add.html:4
 #: templates/product/products.html:12 templates/product/update.html:4
 msgid "Name"
 msgstr "Nombre"
 
-#: templates/client/add.html:8
+#: templates/client/add.html:8 templates/client/clients.html:11
+#: templates/client/update.html:8
 msgid "Phone number"
 msgstr "Número de teléfono"
 
-#: templates/client/add.html:11
+#: templates/client/add.html:11 templates/client/update.html:12
 msgid "Example"
 msgstr "Ejemplo"
 
@@ -291,6 +304,19 @@ msgstr "Ejemplo"
 #: templates/order/add.html:45 templates/product/add.html:20
 msgid "Add"
 msgstr "Agregar"
+
+#: templates/client/clients.html:22 templates/client/update.html:13
+#: templates/product/products.html:29 templates/product/update.html:20
+msgid "Update"
+msgstr "Actualizar"
+
+#: templates/client/update.html:14 templates/product/update.html:21
+msgid "DELETE"
+msgstr "ELIMINAR"
+
+#: templates/client/update.html:20 templates/product/update.html:27
+msgid "Are you sure you want to delete "
+msgstr "¿Estás seguro de que deseas eliminar "
 
 #: templates/occurrence/add.html:4 templates/occurrence/occurrences.html:10
 msgid "Type"
@@ -431,10 +457,6 @@ msgstr "Descargar datos del pedido"
 msgid "Units sold"
 msgstr "Unidades vendidas"
 
-#: templates/product/products.html:29 templates/product/update.html:20
-msgid "Update"
-msgstr "Actualizar"
-
 #: templates/product/transactions.html:10
 msgid "Order ID"
 msgstr "ID del pedido"
@@ -450,12 +472,4 @@ msgstr "Cambio de unidad"
 #: templates/product/transactions.html:19
 msgid "Inserted "
 msgstr "Insertado "
-
-#: templates/product/update.html:21
-msgid "DELETE"
-msgstr "ELIMINAR"
-
-#: templates/product/update.html:27
-msgid "Are you sure you want to delete "
-msgstr "¿Estás seguro de que deseas eliminar "
 
