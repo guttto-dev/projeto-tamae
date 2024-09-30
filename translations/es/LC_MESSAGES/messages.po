@@ -432,8 +432,8 @@ msgid "Payment pending"
 msgstr "Pago pendiente"
 
 #: templates/order/orders.html:22
-msgid "<Anonym>"
-msgstr "<Anónimo>"
+msgid "&lt;Anonym&gt;"
+msgstr "&lt;Anónimo&gt;"
 
 #: templates/order/orders.html:26
 msgid "Make payment"
