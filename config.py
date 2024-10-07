@@ -11,4 +11,4 @@ class Config:
     SESSION_COOKIE_SAMESITE='Lax'
 
     LANGUAGES = ['en', 'pt', 'es', 'ja']
-    DEFAULT_LANGUAGE = 'en'
+    DEFAULT_LANGUAGE = 'pt'
