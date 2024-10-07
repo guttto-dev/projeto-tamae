@@ -7,19 +7,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: app.py:57
+#: app.py:66
 msgid "Error: Unauthorized"
 msgstr "エラー: 権限がありません"
 
-#: app.py:62
+#: app.py:71
 msgid "Error: Page Not Found"
 msgstr "エラー: ページが見つかりません"
 
-#: app.py:68
+#: app.py:77
 msgid "Error: Internal Server"
 msgstr "エラー: サーバー内部エラー"
 
-#: util.py:19
+#: util.py:22
 msgid "You do not have permission to access that page."
 msgstr "そのページにアクセスする権限がありません。"
 
@@ -128,11 +128,15 @@ msgstr "ユーザーログイン"
 msgid " has been logged out."
 msgstr " はログアウトしました。"
 
-#: routes/index.py:101
+#: routes/index.py:100
+msgid "In inactive mode..."
+msgstr "アイドルモードでは..."
+
+#: routes/index.py:106
 msgid "Error"
 msgstr "エラー"
 
-#: routes/index.py:111
+#: routes/index.py:116
 msgid "User deleted successfully."
 msgstr "ユーザーが正常に削除されました。"
 
@@ -208,7 +212,7 @@ msgstr "在庫の変化"
 msgid "Product deleted successfully."
 msgstr "商品が正常に削除されました。"
 
-#: templates/_base.html:27
+#: templates/_base.html:28
 msgid "Register occurrence"
 msgstr "発生を登録"
 
@@ -225,6 +229,14 @@ msgstr "戻る"
 #: templates/product/products.html:7
 msgid "Go to start page"
 msgstr "スタートページに戻る"
+
+#: templates/inactive.html:10
+msgid "Outside working hours!"
+msgstr "勤務時間外でも！"
+
+#: templates/inactive.html:11
+msgid "Try to login"
+msgstr "ログインしてみてください"
 
 #: templates/index-admin.html:3 templates/index.html:3
 msgid "Welcome, "
@@ -329,6 +341,10 @@ msgstr "選択してください"
 #: templates/occurrence/add.html:7
 msgid "Internal"
 msgstr "内部"
+
+#: templates/occurrence/add.html:8
+msgid "ERP"
+msgstr ""
 
 #: templates/occurrence/add.html:16
 #, fuzzy

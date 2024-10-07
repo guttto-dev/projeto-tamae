@@ -7,19 +7,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: app.py:57
+#: app.py:66
 msgid "Error: Unauthorized"
 msgstr "Error: No Autorizado"
 
-#: app.py:62
+#: app.py:71
 msgid "Error: Page Not Found"
 msgstr "Error: Página No Encontrada"
 
-#: app.py:68
+#: app.py:77
 msgid "Error: Internal Server"
 msgstr "Error: Servidor Interno"
 
-#: util.py:19
+#: util.py:22
 msgid "You do not have permission to access that page."
 msgstr "No tienes permiso para acceder a esa página."
 
@@ -128,11 +128,15 @@ msgstr "Inicio de sesión de usuario"
 msgid " has been logged out."
 msgstr " ha cerrado sesión."
 
-#: routes/index.py:101
+#: routes/index.py:100
+msgid "In inactive mode..."
+msgstr "En modo inactivo..."
+
+#: routes/index.py:106
 msgid "Error"
 msgstr "Error"
 
-#: routes/index.py:111
+#: routes/index.py:116
 msgid "User deleted successfully."
 msgstr "Usuario eliminado con éxito."
 
@@ -208,7 +212,7 @@ msgstr "Cambios en el inventario"
 msgid "Product deleted successfully."
 msgstr "Producto eliminado con éxito."
 
-#: templates/_base.html:27
+#: templates/_base.html:28
 msgid "Register occurrence"
 msgstr "Registrar ocurrencia"
 
@@ -225,6 +229,14 @@ msgstr "Volver"
 #: templates/product/products.html:7
 msgid "Go to start page"
 msgstr "Ir a la página de inicio"
+
+#: templates/inactive.html:10
+msgid "Outside working hours!"
+msgstr "¡Fuera del horario laboral!"
+
+#: templates/inactive.html:11
+msgid "Try to login"
+msgstr "Intenta iniciar sesión"
 
 #: templates/index-admin.html:3 templates/index.html:3
 msgid "Welcome, "

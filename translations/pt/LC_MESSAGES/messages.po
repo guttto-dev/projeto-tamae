@@ -7,19 +7,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: app.py:57
+#: app.py:66
 msgid "Error: Unauthorized"
 msgstr "Erro: Não autorizado"
 
-#: app.py:62
+#: app.py:71
 msgid "Error: Page Not Found"
 msgstr "Erro: Página não encontrada"
 
-#: app.py:68
+#: app.py:77
 msgid "Error: Internal Server"
 msgstr "Erro: Servidor Interno"
 
-#: util.py:19
+#: util.py:22
 msgid "You do not have permission to access that page."
 msgstr "Você não tem permissão para acessar essa página."
 
@@ -128,11 +128,15 @@ msgstr "Login de usuário"
 msgid " has been logged out."
 msgstr " foi desconectado."
 
-#: routes/index.py:101
+#: routes/index.py:100
+msgid "In inactive mode..."
+msgstr "Em modo de inatividade..."
+
+#: routes/index.py:106
 msgid "Error"
 msgstr "Erro"
 
-#: routes/index.py:111
+#: routes/index.py:116
 msgid "User deleted successfully."
 msgstr "Usuário excluído com sucesso."
 
@@ -208,7 +212,7 @@ msgstr "Alterações no estoque"
 msgid "Product deleted successfully."
 msgstr "Produto excluído com sucesso."
 
-#: templates/_base.html:27
+#: templates/_base.html:28
 msgid "Register occurrence"
 msgstr "Registrar ocorrência"
 
@@ -225,6 +229,14 @@ msgstr "Voltar"
 #: templates/product/products.html:7
 msgid "Go to start page"
 msgstr "Ir para a página inicial"
+
+#: templates/inactive.html:10
+msgid "Outside working hours!"
+msgstr "Fora do horário de trabalho!"
+
+#: templates/inactive.html:11
+msgid "Try to login"
+msgstr "Tentar fazer login"
 
 #: templates/index-admin.html:3 templates/index.html:3
 msgid "Welcome, "
@@ -463,7 +475,7 @@ msgstr "ID do pedido"
 
 #: templates/product/transactions.html:11
 msgid "Price at that time"
-msgstr "Preço na época"
+msgstr "Preço naquele momento"
 
 #: templates/product/transactions.html:12
 msgid "Unit change"
