@@ -6,8 +6,8 @@
 	</label>
 	<br>
 	<label for="phone_number">{{ _('Phone number') }}:
-		<input type="tel" name="phone_number"  pattern="^\+?[0-9]{10,15}$"
-			   value="{{ client.phone_number }}" placeholder="{{ client.phone_number }}" required>
+		<input type="tel" name="phone_number" pattern="^\+?[0-9]{10,15}$"
+			value="{{ client.phone_number }}" placeholder="{{ client.phone_number }}" required>
 	</label>
 	{{ _('Example') }}: 87912345678<br>
 	<button type="submit">{{ _('Update') }}</button>
