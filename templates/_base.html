@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 		<title>{{ page_title }}</title>
+		<style>{% block style %}{% endblock %}</style>
 	</head>
 	<body>
 		<h1>{{ page_title }}</h1>
@@ -36,9 +37,30 @@
 		{% endif %}
 	</body>
 	<script>{% block script %}{% endblock %}
+
 	function changeLang() {
 		const selLang = document.getElementById('language').value;
 		window.location.href = '{{ url_for('index.change_lang', lang='') }}' + selLang;
 	}
+
+	{% if g.current_user.is_authenticated and g.current_user.access_level == AccessLevel.OPERATOR or g.current_route == 'index.inactive_page' %}
+	function checkWorkHours() {
+		const startHour = '{{ business_start_hour }}';
+		const endHour = '{{ business_end_hour }}';
+		const now = new Date();
+		const currentTime = now.getHours() + ':' + ('0' + now.getMinutes()).slice(-2);
+		if (currentTime < startHour || currentTime > endHour) {
+			{% if g.current_route != 'index.inactive_page' %}
+			window.location.href = '{{ url_for('index.inactive_page') }}';
+			{% endif %}
+		} else {
+			{% if g.current_route == 'index.inactive_page' %}
+			window.location.href = '{{ url_for('index.login_page') }}';
+			{% endif %}
+		}
+	}
+	setInterval(checkWorkHours, 60 * 1000);
+	checkWorkHours();
+	{% endif %}
 	</script>
 </html>

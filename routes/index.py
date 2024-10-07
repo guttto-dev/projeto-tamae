@@ -95,6 +95,11 @@ def logout_page():
     return redirect(url_for('.login_page'))
 
 
+@index_bp.route('/inactive')
+def inactive_page():
+    return render_template('inactive.html', page_title=_('In inactive mode...'))
+
+
 @index_bp.route('/error')
 def error_page():
     error_message = session.pop('error_message', '')

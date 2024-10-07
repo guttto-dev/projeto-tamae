@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+{% block style %}
+body {
+	background-color: black;
+	color: white;
+}
+:link, :visited { filter: invert(100%); }
+{% endblock %}
+{% block main %}
+<p>{{ _('Outside working hours!') }} ({{ business_start_hour }}-{{ business_end_hour }})</p>
+<a href="{{ url_for('index.login_page') }}">{{ _('Try to login') }}</a>
+{% endblock %}

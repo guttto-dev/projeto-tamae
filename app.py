@@ -5,15 +5,17 @@ from flask import (
         g,
         render_template,
         request,
+        redirect,
+        url_for,
         session,
         flash
         )
 from flask_babel import Babel, _
-from flask_login import LoginManager, current_user
+from flask_login import LoginManager, current_user, logout_user
 
 from config import Config
 from models.user import User, AccessLevel, LanguageConfig
-from util import db, bcrypt
+from util import db, bcrypt, in_business_hours
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -41,6 +43,11 @@ def before_request():
     g.current_user = current_user
     g.first_user = User.query.count() == 0
     g.current_route = request.endpoint
+    if g.current_user.is_authenticated and \
+            g.current_user.access_level == AccessLevel.OPERATOR and \
+            not in_business_hours():
+        logout_user()
+        return redirect(url_for('index.inactive_page'))
 
 
 @app.context_processor
@@ -49,7 +56,9 @@ def inject_on_templates():
     return dict(get_locale=get_locale,
                 current_lang=lang_config.lang,
                 languages=Config.LANGUAGES,
-                AccessLevel=AccessLevel)
+                AccessLevel=AccessLevel,
+                business_start_hour=Config.BUSINESS_START_HOUR.strftime('%H:%M'),
+                business_end_hour=Config.BUSINESS_END_HOUR.strftime('%H:%M'))
 
 
 @app.errorhandler(401)
