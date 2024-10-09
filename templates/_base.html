@@ -48,7 +48,7 @@
 		const startHour = '{{ business_start_hour }}';
 		const endHour = '{{ business_end_hour }}';
 		const now = new Date();
-		const currentTime = now.getHours() + ':' + ('0' + now.getMinutes()).slice(-2);
+		const currentTime = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
 		if (currentTime < startHour || currentTime > endHour) {
 			{% if g.current_route != 'index.inactive_page' %}
 			window.location.href = '{{ url_for('index.inactive_page') }}';
