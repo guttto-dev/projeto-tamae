@@ -18,6 +18,7 @@ public class CyberGuard {
 
     public static void main(String[] args) {
         try {
+            addShutdownCleanup();
             System.out.println("""
 
    ______      __              ______                     __
@@ -35,51 +36,53 @@ public class CyberGuard {
 
             FlaskRunner flaskRunner = new FlaskRunner();
             flaskRunner.runFlaskServer();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            encryptDataFile(DATA_FILE, ENCRYPTED_FILE);
-        }
-    }
-
-    private static void enterSandbox(String dirName) {
-        try {
-            Path path = Paths.get(dirName);
-            if (!Files.exists(path)) {
-                Files.createDirectory(path);
-            }
-            System.setProperty("user.dir", path.toAbsolutePath().toString());
-            System.out.println("Entrando em Sandbox no diretório: " + path.toAbsolutePath().toString());
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 
-    private static void decryptDataFile(String fileName) {
-        try {
-            Path path = Paths.get(fileName);
-            if (!Files.exists(path)) {
-                Files.write(path, "<dados importantes de clientes>".getBytes());
-            }
-            byte[] encryptedData = Files.readAllBytes(Paths.get(fileName));
-            String decryptedData = encryptionService.decrypt(encryptedData);
-        } catch (Exception e) {
-            e.printStackTrace();
+    private static void enterSandbox(String dirName) throws IOException {
+        Path path = Paths.get(dirName);
+        if (!Files.exists(path)) {
+            Files.createDirectory(path);
         }
+        System.setProperty("user.dir", path.toAbsolutePath().toString());
+        System.out.println("Entrando em Sandbox no diretório: " + path.toAbsolutePath().toString());
     }
 
-    private static void encryptDataFile(String inputFileName, String outputFileName) {
-        try {
-            String decryptedData = new String(Files.readAllBytes(Paths.get(inputFileName)));
-            byte[] encryptedData = encryptionService.encrypt(decryptedData);
-            Files.write(Paths.get(outputFileName), encryptedData);
-            System.out.println("Protejendo dados na saída...");
-        } catch (Exception e) {
-            e.printStackTrace();
+    private static void decryptDataFile(String fileName) throws IOException {
+        Path path = Paths.get(fileName);
+        if (!Files.exists(path)) {
+            Files.write(path, "<dados importantes de clientes>".getBytes());
         }
+        byte[] encryptedData = Files.readAllBytes(Paths.get(fileName));
+        String decryptedData = encryptionService.decrypt(encryptedData);
     }
 
-    public static void routine() {
+    private static void encryptDataFile(String inputFileName, String outputFileName) throws IOException {
+        String decryptedData = new String(Files.readAllBytes(Paths.get(inputFileName)));
+        byte[] encryptedData = encryptionService.encrypt(decryptedData);
+        Files.write(Paths.get(outputFileName), encryptedData);
+        System.out.println("Protegendo dados na saída...");
+    }
+
+    private static void addShutdownCleanup() {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                try {
+                    encryptDataFile(DATA_FILE, ENCRYPTED_FILE);
+                    System.out.println("Saindo...");
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }});
+    }
+
+    public static void routine() throws IOException {
         decryptDataFile(DATA_FILE);
 
         firewall.isAllowed("192.168.1.101");
@@ -95,18 +98,14 @@ public class CyberGuard {
 
 class FlaskRunner {
 
-    public void runFlaskServer() {
+    public void runFlaskServer() throws IOException, InterruptedException {
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("flask", "run");
-        try {
-            System.out.println("Iniciando aplicação em http://127.0.0.1:5000");
-            Process process = processBuilder.start();
-            CyberGuard.routine();
-            int exitCode = process.waitFor();
-            System.out.println("Aplicação finalizada com o código: " + exitCode);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        System.out.println("Iniciando aplicação em http://127.0.0.1:5000");
+        Process process = processBuilder.start();
+        CyberGuard.routine();
+        int exitCode = process.waitFor();
+        System.out.println("Aplicação finalizada com o código: " + exitCode);
     }
 }
 
@@ -159,7 +158,7 @@ class EncryptionService {
     public EncryptionService() {
         System.out.println("[EncryptionService] ATIVADO");
     }
-    
+
     public byte[] encrypt(String data) {
         return data.getBytes();
     }
