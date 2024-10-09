@@ -464,7 +464,7 @@ msgid "Units minimum"
 msgstr "最小単位"
 
 #: templates/product/products.html:6
-msgid "Download order data"
+msgid "Download orders data"
 msgstr "注文データをダウンロード"
 
 #: templates/product/products.html:16

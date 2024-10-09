@@ -462,8 +462,8 @@ msgid "Units minimum"
 msgstr "Unidades mínimas"
 
 #: templates/product/products.html:6
-msgid "Download order data"
-msgstr "Baixar dados do pedido"
+msgid "Download orders data"
+msgstr "Baixar dados de pedidos"
 
 #: templates/product/products.html:16
 msgid "Units sold"

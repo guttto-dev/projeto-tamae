@@ -64,6 +64,7 @@ def update_page(id):
             flash(_('Product "') + name + _('" already exists.'), 'error')
             return redirect(url_for('.start_page'))
 
+        product.name = name
         product.unit_price = int(float(request.form['unit_price']) * 100)
         units_stored = int(request.form['units_stored'])
         product.units_min = int(request.form['units_min'])

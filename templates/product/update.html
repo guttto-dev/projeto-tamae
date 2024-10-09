@@ -10,7 +10,7 @@
 	</label>
 	<br>
 	<label for="units_stored">{{ _('Units stored') }}:
-		<input name="units_stored" type="number" min="1" max="10000" step="1" value="{{ product.units_stored }}" placeholder="{{ product.units_stored }}" required />
+		<input name="units_stored" type="number" min="1" max="10000" step="1" value="{{ product.units_stored|int }}" placeholder="{{ product.units_stored|int }}" required />
 	</label>
 	<br>
 	<label for="units_min">{{ _('Units minimum') }}:

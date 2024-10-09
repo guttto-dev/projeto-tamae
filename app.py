@@ -8,7 +8,8 @@ from flask import (
         redirect,
         url_for,
         session,
-        flash
+        flash,
+        send_from_directory
         )
 from flask_babel import Babel, _
 from flask_login import LoginManager, current_user, logout_user
@@ -85,8 +86,14 @@ def get_locale():
 babel.init_app(app, locale_selector=get_locale)
 
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+
 with app.app_context():
-    if not os.path.exists(f'{app.instance_path}/{Config.DATABASE_PATH}'):
+    if not os.path.exists(os.path.join(app.instance_path, Config.DATABASE_PATH)):
         db.create_all()
         if Config.DEBUG:
             import db_init_example
