@@ -14,5 +14,7 @@ class Config:
     LANGUAGES = ['en', 'pt', 'es', 'ja']
     DEFAULT_LANGUAGE = 'pt'
 
-    BUSINESS_START_HOUR = time(0, 0)
-    BUSINESS_END_HOUR = time(23, 0)
+    BUSINESS_START_HOUR = time(8, 0)
+    BUSINESS_END_HOUR = time(22, 0)
+
+    MAX_UNPAID_ORDERS = 5

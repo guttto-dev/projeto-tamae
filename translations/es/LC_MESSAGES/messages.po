@@ -7,15 +7,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: app.py:66
+#: app.py:67
 msgid "Error: Unauthorized"
 msgstr "Error: No Autorizado"
 
-#: app.py:71
+#: app.py:72
 msgid "Error: Page Not Found"
 msgstr "Error: Página No Encontrada"
 
-#: app.py:77
+#: app.py:78
 msgid "Error: Internal Server"
 msgstr "Error: Servidor Interno"
 
@@ -160,17 +160,21 @@ msgstr "Ocurrencia "
 msgid " is marked as resolved."
 msgstr " está marcada como resuelta."
 
-#: routes/order.py:41 templates/index.html:15
+#: routes/order.py:42 templates/index.html:15
 msgid "Orders"
 msgstr "Pedidos"
 
-#: routes/order.py:69 routes/order.py:100
+#: routes/order.py:70 routes/order.py:106
 msgid "New order #"
 msgstr "Nuevo pedido #"
 
-#: routes/order.py:83
+#: routes/order.py:85
 msgid "Client must be identified."
 msgstr "El cliente debe ser identificado."
+
+#: routes/order.py:89
+msgid "Customer has exceeded the amount of unpaid orders. Customer needs to make at least one payment."
+msgstr "El cliente ha superado la cantidad de pedidos pendientes de pago. El cliente debe realizar al menos un pago."
 
 #: routes/product.py:29
 msgid "\" has less than minimum quantity."
@@ -196,19 +200,19 @@ msgstr " añadido con éxito."
 msgid "Add new product"
 msgstr "Agregar nuevo producto"
 
-#: routes/product.py:78
+#: routes/product.py:79
 msgid "Product updated successfully."
 msgstr "Producto actualizado con éxito."
 
-#: routes/product.py:81
+#: routes/product.py:82
 msgid "Update product "
 msgstr "Actualizar producto "
 
-#: routes/product.py:89 templates/product/products.html:5
+#: routes/product.py:90 templates/product/products.html:5
 msgid "Stock changes"
 msgstr "Cambios en el inventario"
 
-#: routes/product.py:100
+#: routes/product.py:101
 msgid "Product deleted successfully."
 msgstr "Producto eliminado con éxito."
 

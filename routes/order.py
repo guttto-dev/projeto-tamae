@@ -15,6 +15,7 @@ from models.user import AccessLevel
 from models.product import Product, ProductOrder, ProductTransaction
 from models.client import Client
 from util import db, requires_access_level
+from config import Config
 
 order_bp = Blueprint('order', __name__, url_prefix='/order')
 
@@ -79,9 +80,14 @@ def finish_page():
         client_id = request.form['client_id']
         make_pay = 'make-payment' in request.form
 
-        if not client_id and not make_pay:
-            flash(_('Client must be identified.'), 'error')
-            return redirect(url_for('order.finish_page'))
+        if not make_pay:
+            if not client_id:
+                flash(_('Client must be identified.'), 'error')
+                return redirect(url_for('order.finish_page'))
+            unpaid_orders = ProductOrder.query.filter_by(client_id=client_id, is_paid=False).all()
+            if len(unpaid_orders) >= Config.MAX_UNPAID_ORDERS:
+                flash(_('Customer has exceeded the amount of unpaid orders. Customer needs to make at least one payment.'), 'error')
+                return redirect(url_for('order.finish_page'))
 
         order = ProductOrder.query.get_or_404(session['order_id'])
         if client_id:

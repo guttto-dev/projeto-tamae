@@ -6,15 +6,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: app.py:66
+#: app.py:67
 msgid "Error: Unauthorized"
 msgstr ""
 
-#: app.py:71
+#: app.py:72
 msgid "Error: Page Not Found"
 msgstr ""
 
-#: app.py:77
+#: app.py:78
 msgid "Error: Internal Server"
 msgstr ""
 
@@ -159,16 +159,20 @@ msgstr ""
 msgid " is marked as resolved."
 msgstr ""
 
-#: routes/order.py:41 templates/index.html:15
+#: routes/order.py:42 templates/index.html:15
 msgid "Orders"
 msgstr ""
 
-#: routes/order.py:69 routes/order.py:100
+#: routes/order.py:70 routes/order.py:106
 msgid "New order #"
 msgstr ""
 
-#: routes/order.py:83
+#: routes/order.py:85
 msgid "Client must be identified."
+msgstr ""
+
+#: routes/order.py:89
+msgid "Customer has exceeded the amount of unpaid orders. Customer needs to make at least one payment."
 msgstr ""
 
 #: routes/product.py:29
@@ -195,19 +199,19 @@ msgstr ""
 msgid "Add new product"
 msgstr ""
 
-#: routes/product.py:78
+#: routes/product.py:79
 msgid "Product updated successfully."
 msgstr ""
 
-#: routes/product.py:81
+#: routes/product.py:82
 msgid "Update product "
 msgstr ""
 
-#: routes/product.py:89 templates/product/products.html:5
+#: routes/product.py:90 templates/product/products.html:5
 msgid "Stock changes"
 msgstr ""
 
-#: routes/product.py:100
+#: routes/product.py:101
 msgid "Product deleted successfully."
 msgstr ""
 
@@ -461,7 +465,7 @@ msgid "Units minimum"
 msgstr ""
 
 #: templates/product/products.html:6
-msgid "Download order data"
+msgid "Download orders data"
 msgstr ""
 
 #: templates/product/products.html:16

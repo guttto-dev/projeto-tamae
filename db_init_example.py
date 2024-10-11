@@ -4,7 +4,9 @@ from sqlalchemy import func
 
 from models.user import User, AccessLevel
 from models.product import Product, ProductOrder, ProductTransaction
+from models.client import Client
 from util import db, bcrypt
+from config import Config
 
 #
 # User examples
@@ -20,6 +22,17 @@ db.session.add(User(username='op',
                     password=bcrypt.generate_password_hash("1234").decode('utf-8'),
                     access_level=AccessLevel.OPERATOR))
 db.session.commit()
+
+#
+# Client example
+#
+
+db.session.add(Client(name="Torvaldo",
+                      phone_number=81912345678,
+                      is_deleted=False))
+db.session.commit()
+torvaldo = Client.query.first()
+torvaldo_orders_to_do = Config.MAX_UNPAID_ORDERS
 
 #
 # Product examples
@@ -226,5 +239,10 @@ for assoc in association_examples:
                                               is_valid=False)]
         db.session.add_all(product_ts)
         db.session.commit()
-        order.is_paid = True
+        if torvaldo_orders_to_do > 0:
+            order.client_id = torvaldo.id
+            torvaldo_orders_to_do -= 1
+            order.is_paid = False
+        else:
+            order.is_paid = True
         order.add_to_db(*product_ts)

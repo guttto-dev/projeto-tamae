@@ -1,21 +1,22 @@
 msgid ""
 msgstr ""
 "Language: ja\n"
+"Language-Team: ja <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: app.py:66
+#: app.py:67
 msgid "Error: Unauthorized"
 msgstr "エラー: 権限がありません"
 
-#: app.py:71
+#: app.py:72
 msgid "Error: Page Not Found"
 msgstr "エラー: ページが見つかりません"
 
-#: app.py:77
+#: app.py:78
 msgid "Error: Internal Server"
 msgstr "エラー: サーバー内部エラー"
 
@@ -160,17 +161,21 @@ msgstr "発生 "
 msgid " is marked as resolved."
 msgstr " は解決済みとしてマークされています。"
 
-#: routes/order.py:41 templates/index.html:15
+#: routes/order.py:42 templates/index.html:15
 msgid "Orders"
 msgstr "注文"
 
-#: routes/order.py:69 routes/order.py:100
+#: routes/order.py:70 routes/order.py:106
 msgid "New order #"
 msgstr "新しい注文 #"
 
-#: routes/order.py:83
+#: routes/order.py:85
 msgid "Client must be identified."
 msgstr "クライアントを識別する必要があります。"
+
+#: routes/order.py:89
+msgid "Customer has exceeded the amount of unpaid orders. Customer needs to make at least one payment."
+msgstr "顧客は未払い注文の金額を超えました。顧客は少なくとも 1 回は支払いを行う必要があります。"
 
 #: routes/product.py:29
 msgid "\" has less than minimum quantity."
@@ -196,19 +201,19 @@ msgstr " が正常に追加されました。"
 msgid "Add new product"
 msgstr "新しい商品を追加"
 
-#: routes/product.py:78
+#: routes/product.py:79
 msgid "Product updated successfully."
 msgstr "商品が正常に更新されました。"
 
-#: routes/product.py:81
+#: routes/product.py:82
 msgid "Update product "
 msgstr "商品を更新 "
 
-#: routes/product.py:89 templates/product/products.html:5
+#: routes/product.py:90 templates/product/products.html:5
 msgid "Stock changes"
 msgstr "在庫の変化"
 
-#: routes/product.py:100
+#: routes/product.py:101
 msgid "Product deleted successfully."
 msgstr "商品が正常に削除されました。"
 

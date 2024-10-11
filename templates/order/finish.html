@@ -5,7 +5,7 @@
 		<select name="client_id">
 			<option value="">{{ _('None') }}</option>
 			{% for client in clients %}
-			<option value="{{ client.id }}">{{ client.name }} - {{ client.phone_number }}</option>
+			<option value="{{ client.id }}">#{{ client.id }} - {{ client.name }} - {{ client.phone_number }}</option>
 			{% endfor %}
 		</select>
 	</label>
