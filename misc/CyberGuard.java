@@ -15,6 +15,7 @@ public class CyberGuard {
     private static Firewall firewall;
     private static IntrusionDetectionSystem ids;
     private static EncryptionService encryptionService;
+    private static Process appProcess;
 
     public static void main(String[] args) {
         try {
@@ -35,7 +36,8 @@ public class CyberGuard {
             encryptionService = new EncryptionService();
 
             FlaskRunner flaskRunner = new FlaskRunner();
-            flaskRunner.runFlaskServer();
+            appProcess = flaskRunner.runFlaskServer();
+            appProcess.waitFor();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -75,6 +77,7 @@ public class CyberGuard {
                 try {
                     encryptDataFile(DATA_FILE, ENCRYPTED_FILE);
                     System.out.println("Saindo...");
+                    appProcess.destroy();
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -97,15 +100,13 @@ public class CyberGuard {
 }
 
 class FlaskRunner {
-
-    public void runFlaskServer() throws IOException, InterruptedException {
+    public Process runFlaskServer() throws IOException, InterruptedException {
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("flask", "run");
         System.out.println("Iniciando aplicação em http://127.0.0.1:5000");
         Process process = processBuilder.start();
         CyberGuard.routine();
-        int exitCode = process.waitFor();
-        System.out.println("Aplicação finalizada com o código: " + exitCode);
+        return process;
     }
 }
 
